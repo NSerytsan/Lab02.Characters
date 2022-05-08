@@ -1,0 +1,25 @@
+version: '3.4'
+
+services:
+  lab02.characters_api:
+    image: ${DOCKER_REGISTRY-}lab02.characters_api
+    depends_on: [lab02.mssql_db]
+    build:
+      context: .
+      dockerfile: Lab02.CharactersAPI/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+    ports:
+      - 9080:80
+      - 9433:433
+  
+  lab02.mssql_db:
+    image: mcr.microsoft.com/mssql/server:latest
+    hostname: lab02_mssql_db
+    container_name: lab02.mssql_db
+    environment: 
+        ACCEPT_EULA: Y 
+        SA_PASSWORD: Bazz1nga
+    ports:
+        - 1433:1433 
