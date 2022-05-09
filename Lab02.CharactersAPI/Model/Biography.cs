@@ -1,5 +1,8 @@
-﻿namespace Lab02.CharactersAPI.Model
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Lab02.CharactersAPI.Model
 {
+    [Table("Biography")]
     public class Biography
     {
         public int Id { get; set; }
