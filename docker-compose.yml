@@ -9,7 +9,7 @@ services:
       dockerfile: Lab02.CharactersAPI/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_URLS=http://+:80
     ports:
       - 9080:80
       - 9433:433
