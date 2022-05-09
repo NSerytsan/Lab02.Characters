@@ -15,7 +15,7 @@ services:
       - 9433:433
 
   lab02.mssql_db:
-    image: mcr.microsoft.com/mssql/server:latest
+    image: mcr.microsoft.com/mssql/server:2019-latest
     hostname: lab02_mssql_db
     container_name: lab02.mssql_db
     environment:
