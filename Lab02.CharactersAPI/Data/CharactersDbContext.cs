@@ -1,5 +1,4 @@
-﻿using Lab02.CharactersAPI.Model;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace Lab02.CharactersAPI.Data
 {
@@ -9,7 +8,6 @@ namespace Lab02.CharactersAPI.Data
         public virtual DbSet<Skill> Skills { get; set; } = null!;
         public virtual DbSet<Weapon> Weapons { get; set; } = null!;
         public virtual DbSet<WeaponType> WeaponTypes { get; set; } = null!;
-        public virtual DbSet<Biography> Biographies { get; set; } = null!;
         
         public CharactersDbContext(DbContextOptions<CharactersDbContext> options) : base(options)
         {

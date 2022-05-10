@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Lab02.CharactersAPI.Model;
+namespace Lab02.CharactersAPI.Data;
 
 [Table(("Character"))]
 public class Character
@@ -19,7 +19,7 @@ public class Character
     public int HealthPoints { get; set; }
     public int Attack { get; set; }
     public int Defense { get; set; }
+    public string Biography { get; set; } = null!;
     public virtual ICollection<Skill> Skills { get; set; }
     public virtual Weapon Weapon { get; set; } = null!;
-    public virtual Biography Biography { get; set; } = null!;
 }
