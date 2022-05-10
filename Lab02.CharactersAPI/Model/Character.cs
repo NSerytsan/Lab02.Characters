@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Lab02.CharactersAPI.Model;
@@ -10,6 +11,7 @@ public class Character
         Skills = new HashSet<Skill>();
     }
 
+    [Key]
     public int Id { get; set; }
     public int WeaponId { get; set; }
     public int BiographyId { get; set; }
