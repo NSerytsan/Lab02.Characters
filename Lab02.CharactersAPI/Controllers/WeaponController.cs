@@ -9,33 +9,25 @@ namespace Lab02.CharactersAPI.Controllers
     [ApiController]
     public class WeaponsController : ControllerBase
     {
-        private readonly CharactersDbContext _context;
+        private readonly UnitOfWork _uow;
 
-        public WeaponsController(CharactersDbContext context)
+        public WeaponsController(UnitOfWork uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
-        // GET: api/Weapons
+        // GET: api/Weapon
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Weapon>>> GetWeapons()
         {
-          if (_context.Weapons == null)
-          {
-              return NotFound();
-          }
-            return await _context.Weapons.ToListAsync();
+            return await _uow.WeaponRepository.GetAllAsync();
         }
 
-        // GET: api/Weapons/5
+        // GET: api/Weapon/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Weapon>> GetWeapon(int id)
         {
-          if (_context.Weapons == null)
-          {
-              return NotFound();
-          }
-            var weapon = await _context.Weapons.FindAsync(id);
+            var weapon = await _uow.WeaponRepository.GetAsync(id);
 
             if (weapon == null)
             {
@@ -45,7 +37,7 @@ namespace Lab02.CharactersAPI.Controllers
             return weapon;
         }
 
-        // PUT: api/Weapons/5
+        // PUT: api/Weapon/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutWeapon(int id, Weapon weapon)
@@ -55,15 +47,15 @@ namespace Lab02.CharactersAPI.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(weapon).State = EntityState.Modified;
-
+            await _uow.WeaponRepository.UpdateAsync(weapon);
             try
             {
-                await _context.SaveChangesAsync();
+                await _uow.SaveAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!WeaponExists(id))
+                bool exists = await WeaponExists(id);
+                if (!exists)
                 {
                     return NotFound();
                 }
@@ -76,44 +68,30 @@ namespace Lab02.CharactersAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/Weapons
+        // POST: api/Weapon
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Weapon>> PostWeapon(Weapon weapon)
         {
-          if (_context.Weapons == null)
-          {
-              return Problem("Entity set 'CharactersDbContext.Weapons'  is null.");
-          }
-            _context.Weapons.Add(weapon);
-            await _context.SaveChangesAsync();
+            await _uow.WeaponRepository.AddSync(weapon);
+            await _uow.SaveAsync();
 
             return CreatedAtAction("GetWeapon", new { id = weapon.Id }, weapon);
         }
 
-        // DELETE: api/Weapons/5
+        // DELETE: api/Weapon/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteWeapon(int id)
         {
-            if (_context.Weapons == null)
-            {
-                return NotFound();
-            }
-            var weapon = await _context.Weapons.FindAsync(id);
-            if (weapon == null)
-            {
-                return NotFound();
-            }
-
-            _context.Weapons.Remove(weapon);
-            await _context.SaveChangesAsync();
+            await _uow.WeaponRepository.DeleteAsync(id);
+            await _uow.SaveAsync();
 
             return NoContent();
         }
 
-        private bool WeaponExists(int id)
+        private async Task<bool> WeaponExists(int id)
         {
-            return (_context.Weapons?.Any(e => e.Id == id)).GetValueOrDefault();
+            return await _uow.WeaponRepository.Exists(id);
         }
     }
 }
