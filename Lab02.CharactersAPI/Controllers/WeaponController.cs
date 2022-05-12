@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Lab02.CharactersAPI.Data;
 using Lab02.CharactersAPI.Models;
+using Lab02.CharactersAPI.Interfaces;
 
 namespace Lab02.CharactersAPI.Controllers
 {
@@ -9,9 +9,9 @@ namespace Lab02.CharactersAPI.Controllers
     [ApiController]
     public class WeaponsController : ControllerBase
     {
-        private readonly UnitOfWork _uow;
+        private readonly IUnitOfWork _uow;
 
-        public WeaponsController(UnitOfWork uow)
+        public WeaponsController(IUnitOfWork uow)
         {
             _uow = uow;
         }
