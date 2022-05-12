@@ -1,4 +1,4 @@
-namespace Lab02.CharactersAPI.Repository;
+namespace Lab02.CharactersAPI.Interfaces;
 
 public interface IGenericRepository<T> where T : class
 {
