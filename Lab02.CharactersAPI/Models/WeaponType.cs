@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Lab02.CharactersAPI.Data;
+namespace Lab02.CharactersAPI.Models;
 
 [Table("WeaponType")]
 public class WeaponType

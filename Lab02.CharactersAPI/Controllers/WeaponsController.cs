@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Lab02.CharactersAPI.Data;
+using Lab02.CharactersAPI.Models;
 
 namespace Lab02.CharactersAPI.Controllers
 {

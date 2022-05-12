@@ -1,4 +1,3 @@
-using Lab02.CharactersAPI.Contracts;
 using Lab02.CharactersAPI.Data;
 using Microsoft.EntityFrameworkCore;
 

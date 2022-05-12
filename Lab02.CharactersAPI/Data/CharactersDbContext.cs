@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Lab02.CharactersAPI.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Lab02.CharactersAPI.Data
 {
