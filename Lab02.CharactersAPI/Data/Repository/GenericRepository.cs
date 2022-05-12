@@ -1,8 +1,7 @@
-using Lab02.CharactersAPI.Data;
 using Lab02.CharactersAPI.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace Lab02.CharactersAPI.Repository;
+namespace Lab02.CharactersAPI.Data.Repository;
 
 public class GenericRepository<T> : IGenericRepository<T> where T : class
 {
