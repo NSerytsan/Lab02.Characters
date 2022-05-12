@@ -73,7 +73,7 @@ namespace Lab02.CharactersAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Weapon>> PostWeapon(Weapon weapon)
         {
-            await _uow.WeaponRepository.AddSync(weapon);
+            await _uow.WeaponRepository.AddAsync(weapon);
             await _uow.SaveAsync();
 
             return CreatedAtAction("GetWeapon", new { id = weapon.Id }, weapon);

@@ -1,69 +1,61 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Lab02.CharactersAPI.Data;
 using Lab02.CharactersAPI.Models;
+using Lab02.CharactersAPI.Interfaces;
 
 namespace Lab02.CharactersAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class WeaponTypesController : ControllerBase
+    public class WeaponTypeController : ControllerBase
     {
-        private readonly CharactersDbContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public WeaponTypesController(CharactersDbContext context)
+        public WeaponTypeController(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
         }
 
-        // GET: api/WeaponTypes
+        // GET: api/WeaponType
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Weapon>>> GetWeapons()
+        public async Task<ActionResult<IEnumerable<WeaponType>>> GetWeaponTypes()
         {
-          if (_context.Weapons == null)
-          {
-              return NotFound();
-          }
-            return await _context.Weapons.ToListAsync();
+            return await _unitOfWork.WeaponTypeRepository.GetAllAsync();
         }
 
-        // GET: api/WeaponTypes/5
+        // GET: api/WeaponType/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Weapon>> GetWeapon(int id)
+        public async Task<ActionResult<WeaponType>> GetWeaponType(int id)
         {
-          if (_context.Weapons == null)
-          {
-              return NotFound();
-          }
-            var weapon = await _context.Weapons.FindAsync(id);
+            var weaponType = await _unitOfWork.WeaponTypeRepository.GetAsync(id);
 
-            if (weapon == null)
+            if (weaponType == null)
             {
                 return NotFound();
             }
 
-            return weapon;
+            return weaponType;
         }
 
         // PUT: api/WeaponTypes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutWeapon(int id, Weapon weapon)
+        public async Task<IActionResult> PutWeaponType(int id, WeaponType weaponType)
         {
-            if (id != weapon.Id)
+            if (id != weaponType.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(weapon).State = EntityState.Modified;
+            await _unitOfWork.WeaponTypeRepository.UpdateAsync(weaponType);
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _unitOfWork.SaveAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!WeaponExists(id))
+                if (!await WeaponTypeExistsAsync(id))
                 {
                     return NotFound();
                 }
@@ -79,41 +71,33 @@ namespace Lab02.CharactersAPI.Controllers
         // POST: api/WeaponTypes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Weapon>> PostWeapon(Weapon weapon)
+        public async Task<ActionResult<Weapon>> PostWeaponType(WeaponType weaponType)
         {
-          if (_context.Weapons == null)
-          {
-              return Problem("Entity set 'CharactersDbContext.Weapons'  is null.");
-          }
-            _context.Weapons.Add(weapon);
-            await _context.SaveChangesAsync();
+            await _unitOfWork.WeaponTypeRepository.AddAsync(weaponType);
+            await _unitOfWork.SaveAsync();
 
-            return CreatedAtAction("GetWeapon", new { id = weapon.Id }, weapon);
+            return CreatedAtAction("GetWeaponType", new { id = weaponType.Id }, weaponType);
         }
 
         // DELETE: api/WeaponTypes/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteWeapon(int id)
+        public async Task<IActionResult> DeleteWeaponType(int id)
         {
-            if (_context.Weapons == null)
-            {
-                return NotFound();
-            }
-            var weapon = await _context.Weapons.FindAsync(id);
-            if (weapon == null)
+            var weaponType = await _unitOfWork.WeaponTypeRepository.GetAsync(id);
+            if (weaponType is null)
             {
                 return NotFound();
             }
 
-            _context.Weapons.Remove(weapon);
-            await _context.SaveChangesAsync();
+            await _unitOfWork.WeaponTypeRepository.DeleteAsync(id);
+            await _unitOfWork.SaveAsync();
 
             return NoContent();
         }
 
-        private bool WeaponExists(int id)
+        private async Task<bool> WeaponTypeExistsAsync(int id)
         {
-            return (_context.Weapons?.Any(e => e.Id == id)).GetValueOrDefault();
+            return await _unitOfWork.WeaponTypeRepository.Exists(id);
         }
     }
 }

@@ -14,6 +14,8 @@ public class UnitOfWork : IUnitOfWork
     }
     public IWeaponRepository WeaponRepository => new WeaponRepository(_context);
 
+    public IWeaponTypeRepository WeaponTypeRepository => new WeaponTypeRepository(_context);
+
     public async Task<bool> SaveAsync()
     {
         return await _context.SaveChangesAsync() > 0;
