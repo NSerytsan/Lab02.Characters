@@ -33,7 +33,7 @@ namespace Lab02.CharactersAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<WeaponTypeDto>> GetWeaponType(int id)
         {
-            var weaponType = await _unitOfWork.WeaponTypeRepository.GetAsync(id);
+            var weaponType = await _unitOfWork.WeaponTypeRepository.GetDetailsAsync(id);
 
             if (weaponType == null)
             {

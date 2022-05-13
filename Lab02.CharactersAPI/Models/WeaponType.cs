@@ -6,13 +6,8 @@ namespace Lab02.CharactersAPI.Models;
 [Table("WeaponType")]
 public class WeaponType
 {
-    public WeaponType()
-    {
-        Weapons = new HashSet<Weapon>();
-    }
-
     [Key]
     public int Id { get; set; }
     public string Name { get; set; } = null!;
-    public virtual ICollection<Weapon> Weapons { get; set; }
+    public virtual ICollection<Weapon> Weapons { get; set; } = null!;
 }
