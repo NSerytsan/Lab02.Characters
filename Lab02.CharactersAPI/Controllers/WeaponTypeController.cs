@@ -43,7 +43,7 @@ namespace Lab02.CharactersAPI.Controllers
             return Ok(weaponTypeDto);
         }
 
-        // PUT: api/WeaponTypes/5
+        // PUT: api/WeaponType/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutWeaponType(int id, UpdateWeaponTypeDto updateWeaponTypeDto)
@@ -83,7 +83,7 @@ namespace Lab02.CharactersAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/WeaponTypes
+        // POST: api/WeaponType
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Weapon>> PostWeaponType(CreateWeaponTypeDto createWeaponTypeDto)
@@ -95,7 +95,7 @@ namespace Lab02.CharactersAPI.Controllers
             return CreatedAtAction("GetWeaponType", new { id = weaponType.Id }, weaponType);
         }
 
-        // DELETE: api/WeaponTypes/5
+        // DELETE: api/WeaponType/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteWeaponType(int id)
         {
