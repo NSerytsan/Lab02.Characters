@@ -1,4 +1,5 @@
 using Lab02.CharactersAPI.Data;
+using Lab02.CharactersAPI.Helpers;
 using Lab02.CharactersAPI.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,6 +13,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
+builder.Services.AddAutoMapper(typeof(MapperConfig));
 
 var app = builder.Build();
 

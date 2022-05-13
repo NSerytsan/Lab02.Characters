@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Lab02.CharactersAPI.Models;
 using Lab02.CharactersAPI.Interfaces;
+using AutoMapper;
+using Lab02.CharactersAPI.Dtos.WeaponTypes;
 
 namespace Lab02.CharactersAPI.Controllers
 {
@@ -10,22 +12,26 @@ namespace Lab02.CharactersAPI.Controllers
     public class WeaponTypeController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public WeaponTypeController(IUnitOfWork unitOfWork)
+        public WeaponTypeController(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         // GET: api/WeaponType
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<WeaponType>>> GetWeaponTypes()
+        public async Task<ActionResult<IEnumerable<GetWeaponTypeDto>>> GetWeaponTypes()
         {
-            return await _unitOfWork.WeaponTypeRepository.GetAllAsync();
+            var weaponTypes = await _unitOfWork.WeaponTypeRepository.GetAllAsync();
+            var records = _mapper.Map<List<GetWeaponTypeDto>>(weaponTypes);
+            return Ok(records);
         }
 
         // GET: api/WeaponType/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<WeaponType>> GetWeaponType(int id)
+        public async Task<ActionResult<WeaponTypeDto>> GetWeaponType(int id)
         {
             var weaponType = await _unitOfWork.WeaponTypeRepository.GetAsync(id);
 
@@ -33,8 +39,8 @@ namespace Lab02.CharactersAPI.Controllers
             {
                 return NotFound();
             }
-
-            return weaponType;
+            var weaponTypeDto = _mapper.Map<WeaponTypeDto>(weaponType);
+            return Ok(weaponTypeDto);
         }
 
         // PUT: api/WeaponTypes/5
@@ -47,7 +53,7 @@ namespace Lab02.CharactersAPI.Controllers
                 return BadRequest();
             }
 
-            await _unitOfWork.WeaponTypeRepository.UpdateAsync(weaponType);
+            _unitOfWork.WeaponTypeRepository.Update(weaponType);
 
             try
             {
@@ -71,8 +77,9 @@ namespace Lab02.CharactersAPI.Controllers
         // POST: api/WeaponTypes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Weapon>> PostWeaponType(WeaponType weaponType)
+        public async Task<ActionResult<Weapon>> PostWeaponType(CreateWeaponTypeDto createWeaponTypeDto)
         {
+            var weaponType = _mapper.Map<WeaponType>(createWeaponTypeDto);
             await _unitOfWork.WeaponTypeRepository.AddAsync(weaponType);
             await _unitOfWork.SaveAsync();
 

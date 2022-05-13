@@ -14,7 +14,6 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
     public async Task<T> AddAsync(T entity)
     {
         await _context.AddAsync(entity);
-        await _context.SaveChangesAsync();
 
         return entity;
     }
@@ -25,7 +24,6 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         if (entity is not null)
         {
             _context.Set<T>().Remove(entity);
-            await _context.SaveChangesAsync();
         }
     }
 
@@ -47,9 +45,8 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         return await _context.Set<T>().FindAsync(id);
     }
 
-    public async Task UpdateAsync(T entity)
+    public void Update(T entity)
     {
         _context.Update(entity);
-        await _context.SaveChangesAsync();
     }
 }

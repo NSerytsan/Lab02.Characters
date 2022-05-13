@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Lab02.CharactersAPI.Models;
 using Lab02.CharactersAPI.Interfaces;
+using AutoMapper;
+using Lab02.CharactersAPI.Dtos.Weapon;
 
 namespace Lab02.CharactersAPI.Controllers
 {
@@ -10,17 +12,21 @@ namespace Lab02.CharactersAPI.Controllers
     public class WeaponsController : ControllerBase
     {
         private readonly IUnitOfWork _uow;
+        private readonly IMapper _mapper;
 
-        public WeaponsController(IUnitOfWork uow)
+        public WeaponsController(IUnitOfWork uow, IMapper mapper)
         {
             _uow = uow;
+            _mapper = mapper;
         }
 
         // GET: api/Weapon
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Weapon>>> GetWeapons()
+        public async Task<ActionResult<IEnumerable<WeaponDto>>> GetWeapons()
         {
-            return await _uow.WeaponRepository.GetAllAsync();
+            var weapons = await _uow.WeaponRepository.GetAllAsync();
+            var records = _mapper.Map<WeaponDto>(weapons);
+            return Ok(records);
         }
 
         // GET: api/Weapon/5
@@ -47,7 +53,7 @@ namespace Lab02.CharactersAPI.Controllers
                 return BadRequest();
             }
 
-            await _uow.WeaponRepository.UpdateAsync(weapon);
+            _uow.WeaponRepository.Update(weapon);
             try
             {
                 await _uow.SaveAsync();
@@ -71,8 +77,9 @@ namespace Lab02.CharactersAPI.Controllers
         // POST: api/Weapon
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Weapon>> PostWeapon(Weapon weapon)
+        public async Task<ActionResult<Weapon>> PostWeapon(CreateWeaponDto createWeaponDto)
         {
+            var weapon = _mapper.Map<Weapon>(createWeaponDto);
             await _uow.WeaponRepository.AddAsync(weapon);
             await _uow.SaveAsync();
 
