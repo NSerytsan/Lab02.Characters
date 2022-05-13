@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Lab02.CharactersAPI.Models;
 using Lab02.CharactersAPI.Interfaces;
 using AutoMapper;
-using Lab02.CharactersAPI.Dtos.WeaponTypes;
+using Lab02.CharactersAPI.Dtos.WeaponType;
 
 namespace Lab02.CharactersAPI.Controllers
 {
@@ -46,12 +46,21 @@ namespace Lab02.CharactersAPI.Controllers
         // PUT: api/WeaponTypes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutWeaponType(int id, WeaponType weaponType)
+        public async Task<IActionResult> PutWeaponType(int id, UpdateWeaponTypeDto updateWeaponTypeDto)
         {
-            if (id != weaponType.Id)
+            if (id != updateWeaponTypeDto.Id)
             {
                 return BadRequest();
             }
+
+            var weaponType = await _unitOfWork.WeaponTypeRepository.GetAsync(id);
+
+            if (weaponType == null)
+            {
+                return NotFound();
+            }
+
+            _mapper.Map(updateWeaponTypeDto, weaponType);
 
             _unitOfWork.WeaponTypeRepository.Update(weaponType);
 
