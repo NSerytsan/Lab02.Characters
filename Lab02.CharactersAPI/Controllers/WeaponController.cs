@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Lab02.CharactersAPI.Data;
 using Lab02.CharactersAPI.Models;
+using Lab02.CharactersAPI.Dtos.Weapon;
 
 namespace Lab02.CharactersAPI.Controllers
 {
@@ -18,23 +19,34 @@ namespace Lab02.CharactersAPI.Controllers
 
         // GET: api/Weapon
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Weapon>>> GetWeapons()
+        public async Task<ActionResult<IEnumerable<GetWeaponDto>>> GetWeapons()
         {
-          if (_context.Weapons == null)
-          {
-              return NotFound();
-          }
-            return await _context.Weapons.ToListAsync();
+            if (_context.Weapons == null)
+            {
+                return NotFound();
+            }
+
+            var weapons = await _context.Weapons.ToListAsync();
+            var weaponDtos = from weapon in weapons
+                             select new GetWeaponDto
+                             {
+                                 Id = weapon.Id,
+                                 Name = weapon.Name,
+                                 Attack = weapon.Id,
+                                 WeaponTypeId = weapon.WeaponTypeId
+                             };
+
+            return Ok(weaponDtos);
         }
 
         // GET: api/Weapon/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Weapon>> GetWeapon(int id)
         {
-          if (_context.Weapons == null)
-          {
-              return NotFound();
-          }
+            if (_context.Weapons == null)
+            {
+                return NotFound();
+            }
             var weapon = await _context.Weapons.FindAsync(id);
 
             if (weapon == null)
@@ -81,10 +93,10 @@ namespace Lab02.CharactersAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Weapon>> PostWeapon(Weapon weapon)
         {
-          if (_context.Weapons == null)
-          {
-              return Problem("Entity set 'CharactersDbContext.Weapons'  is null.");
-          }
+            if (_context.Weapons == null)
+            {
+                return Problem("Entity set 'CharactersDbContext.Weapons'  is null.");
+            }
             _context.Weapons.Add(weapon);
             await _context.SaveChangesAsync();
 

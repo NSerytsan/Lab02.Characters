@@ -8,6 +8,4 @@ public abstract class BaseWeaponDto
     public string Name { get; set; } = null!;
     [Required]
     public int Attack { get; set; }
-    [Required]
-    public int WeaponTypeId { get; set; }
 }

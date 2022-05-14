@@ -58,8 +58,7 @@ namespace Lab02.CharactersAPI.Controllers
                              {
                                  Id = weapon.Id,
                                  Name = weapon.Name,
-                                 Attack = weapon.Attack,
-                                 WeaponTypeId = weapon.WeaponTypeId
+                                 Attack = weapon.Attack
                              };
 
             var weaponTypeDto = new WeaponTypeDto()
