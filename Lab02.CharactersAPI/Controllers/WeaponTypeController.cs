@@ -83,7 +83,7 @@ namespace Lab02.CharactersAPI.Controllers
             }
 
             var weaponType = await _context.WeaponTypes.FindAsync(id);
-            
+
             if (weaponType == null)
             {
                 return NotFound();
@@ -128,7 +128,7 @@ namespace Lab02.CharactersAPI.Controllers
             _context.WeaponTypes.Add(weaponType);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetWeaponType", new { id = weaponType.Id }, new WeaponTypeDto { Id = weaponType.Id, Name = weaponType.Name});
+            return CreatedAtAction("GetWeaponType", new { id = weaponType.Id }, new WeaponTypeDto { Id = weaponType.Id, Name = weaponType.Name });
         }
 
         // DELETE: api/WeaponType/5
