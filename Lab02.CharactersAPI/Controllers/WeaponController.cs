@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Lab02.CharactersAPI.Data;
 using Lab02.CharactersAPI.Models;
 using Lab02.CharactersAPI.Dtos.Weapon;
+using Lab02.CharactersAPI.Dtos.WeaponType;
 
 namespace Lab02.CharactersAPI.Controllers
 {
@@ -41,20 +42,36 @@ namespace Lab02.CharactersAPI.Controllers
 
         // GET: api/Weapon/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Weapon>> GetWeapon(int id)
+        public async Task<ActionResult<WeaponDto>> GetWeapon(int id)
         {
             if (_context.Weapons == null)
             {
                 return NotFound();
             }
-            var weapon = await _context.Weapons.FindAsync(id);
+
+            var weapon = await _context.Weapons.Include(w => w.WeaponType).FirstOrDefaultAsync(w => w.Id == id);
 
             if (weapon == null)
             {
                 return NotFound();
             }
 
-            return weapon;
+            var weaponType = new GetWeaponTypeDto()
+            {
+                Id = weapon.WeaponType.Id,
+                Name = weapon.WeaponType.Name
+            };
+
+            var weaponDto = new WeaponDto()
+            {
+                Id = weapon.Id,
+                Name = weapon.Name,
+                Attack = weapon.Attack,
+                WeaponTypeId = weapon.WeaponTypeId,
+                WeaponType = weaponType
+            };
+
+            return Ok(weaponDto);
         }
 
         // PUT: api/Weapon/5
