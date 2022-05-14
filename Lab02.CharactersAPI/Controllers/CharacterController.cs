@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Lab02.CharactersAPI.Data;
 using Lab02.CharactersAPI.Models;
+using Lab02.CharactersAPI.Dtos.Character;
+using Lab02.CharactersAPI.Dtos.Skill;
 
 namespace Lab02.CharactersAPI.Controllers
 {
@@ -18,23 +20,42 @@ namespace Lab02.CharactersAPI.Controllers
 
         // GET: api/Character
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Character>>> GetCharacters()
+        public async Task<ActionResult<IEnumerable<GetCharacterDto>>> GetCharacters()
         {
-          if (_context.Characters == null)
-          {
-              return NotFound();
-          }
-            return await _context.Characters.ToListAsync();
+            if (_context.Characters == null)
+            {
+                return NotFound();
+            }
+            var characters = await _context.Characters.Include(c => c.Skills).ToListAsync();
+
+            var dtos = from character in characters
+                       select new GetCharacterDto()
+                       {
+                           Id = character.Id,
+                           Name = character.Name,
+                           HealthPoints = character.HealthPoints,
+                           Attack = character.Attack,
+                           Defense = character.Defense,
+                           Biography = character.Biography,
+                           WeaponId = character.WeaponId,
+                           Skills = from skill in character.Skills
+                                    select new SkillIdDto()
+                                    {
+                                        SkillId = skill.Id
+                                    }
+                       };
+
+            return Ok(dtos);
         }
 
         // GET: api/Character/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Character>> GetCharacter(int id)
         {
-          if (_context.Characters == null)
-          {
-              return NotFound();
-          }
+            if (_context.Characters == null)
+            {
+                return NotFound();
+            }
             var character = await _context.Characters.FindAsync(id);
 
             if (character == null)
@@ -81,10 +102,10 @@ namespace Lab02.CharactersAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Character>> PostCharacter(Character character)
         {
-          if (_context.Characters == null)
-          {
-              return Problem("Entity set 'CharactersDbContext.Characters'  is null.");
-          }
+            if (_context.Characters == null)
+            {
+                return Problem("Entity set 'CharactersDbContext.Characters'  is null.");
+            }
             _context.Characters.Add(character);
             await _context.SaveChangesAsync();
 
