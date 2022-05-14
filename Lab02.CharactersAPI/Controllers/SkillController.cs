@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Lab02.CharactersAPI.Data;
 using Lab02.CharactersAPI.Models;
 using Lab02.CharactersAPI.Dtos.Skill;
+using Lab02.CharactersAPI.Dtos.Character;
 
 namespace Lab02.CharactersAPI.Controllers
 {
@@ -40,20 +41,43 @@ namespace Lab02.CharactersAPI.Controllers
 
         // GET: api/Skill/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Skill>> GetSkill(int id)
+        public async Task<ActionResult<SkillDto>> GetSkill(int id)
         {
             if (_context.Skills == null)
             {
                 return NotFound();
             }
-            var skill = await _context.Skills.FindAsync(id);
+
+            var skill = await _context.Skills.Include(s => s.Characters).FirstOrDefaultAsync(s => s.Id == id);
 
             if (skill == null)
             {
                 return NotFound();
             }
 
-            return skill;
+            var skillDto = new SkillDto()
+            {
+                Id = skill.Id,
+                Name = skill.Name,
+                Description = skill.Description
+            };
+
+            if (skill.Characters is not null)
+            {
+                var characters = from character in skill.Characters
+                select new GetCharacterDto()
+                {
+                    Id = character.Id,
+                    Name = character.Name,
+                    Attack = character.Attack,
+                    Defense = character.Defense,
+                    HealthPoints = character.HealthPoints,
+                    Biography = character.Biography,
+                    WeaponId = character.WeaponId
+                };
+            }
+
+            return skillDto;
         }
 
         // PUT: api/Skill/5
