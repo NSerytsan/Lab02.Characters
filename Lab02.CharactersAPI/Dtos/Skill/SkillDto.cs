@@ -7,5 +7,5 @@ public class SkillDto : BaseSkillDto
 {
     [Required]
     public int Id { get; set; }
-    public List<GetCharacterDto> Characters {get; set;} = null!;
+    public IEnumerable<GetCharacterDto> Characters {get; set;} = null!;
 }
