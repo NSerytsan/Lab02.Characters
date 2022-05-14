@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Lab02.CharactersAPI.Models.Dtos.Weapon;
+namespace Lab02.CharactersAPI.Dtos.Weapon;
 
 public class WeaponDto : BaseWeaponDto
 {

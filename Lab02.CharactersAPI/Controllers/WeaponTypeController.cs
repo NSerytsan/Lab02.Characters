@@ -2,8 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Lab02.CharactersAPI.Data;
 using Lab02.CharactersAPI.Models;
-using Lab02.CharactersAPI.Models.Dtos.WeaponType;
-using Lab02.CharactersAPI.Models.Dtos.Weapon;
+using Lab02.CharactersAPI.Dtos.WeaponType;
+using Lab02.CharactersAPI.Dtos.Weapon;
 
 namespace Lab02.CharactersAPI.Controllers
 {
