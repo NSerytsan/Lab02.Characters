@@ -12,55 +12,55 @@ namespace Lab02.CharactersAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class WeaponController : ControllerBase
+    public class CharacterController : ControllerBase
     {
         private readonly CharactersDbContext _context;
 
-        public WeaponController(CharactersDbContext context)
+        public CharacterController(CharactersDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/Weapon
+        // GET: api/Character
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Weapon>>> GetWeapons()
+        public async Task<ActionResult<IEnumerable<Character>>> GetCharacters()
         {
-          if (_context.Weapons == null)
+          if (_context.Characters == null)
           {
               return NotFound();
           }
-            return await _context.Weapons.ToListAsync();
+            return await _context.Characters.ToListAsync();
         }
 
-        // GET: api/Weapon/5
+        // GET: api/Character/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Weapon>> GetWeapon(int id)
+        public async Task<ActionResult<Character>> GetCharacter(int id)
         {
-          if (_context.Weapons == null)
+          if (_context.Characters == null)
           {
               return NotFound();
           }
-            var weapon = await _context.Weapons.FindAsync(id);
+            var character = await _context.Characters.FindAsync(id);
 
-            if (weapon == null)
+            if (character == null)
             {
                 return NotFound();
             }
 
-            return weapon;
+            return character;
         }
 
-        // PUT: api/Weapon/5
+        // PUT: api/Character/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutWeapon(int id, Weapon weapon)
+        public async Task<IActionResult> PutCharacter(int id, Character character)
         {
-            if (id != weapon.Id)
+            if (id != character.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(weapon).State = EntityState.Modified;
+            _context.Entry(character).State = EntityState.Modified;
 
             try
             {
@@ -68,7 +68,7 @@ namespace Lab02.CharactersAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!WeaponExists(id))
+                if (!CharacterExists(id))
                 {
                     return NotFound();
                 }
@@ -81,44 +81,44 @@ namespace Lab02.CharactersAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/Weapon
+        // POST: api/Character
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Weapon>> PostWeapon(Weapon weapon)
+        public async Task<ActionResult<Character>> PostCharacter(Character character)
         {
-          if (_context.Weapons == null)
+          if (_context.Characters == null)
           {
-              return Problem("Entity set 'CharactersDbContext.Weapons'  is null.");
+              return Problem("Entity set 'CharactersDbContext.Characters'  is null.");
           }
-            _context.Weapons.Add(weapon);
+            _context.Characters.Add(character);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetWeapon", new { id = weapon.Id }, weapon);
+            return CreatedAtAction("GetCharacter", new { id = character.Id }, character);
         }
 
-        // DELETE: api/Weapon/5
+        // DELETE: api/Character/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteWeapon(int id)
+        public async Task<IActionResult> DeleteCharacter(int id)
         {
-            if (_context.Weapons == null)
+            if (_context.Characters == null)
             {
                 return NotFound();
             }
-            var weapon = await _context.Weapons.FindAsync(id);
-            if (weapon == null)
+            var character = await _context.Characters.FindAsync(id);
+            if (character == null)
             {
                 return NotFound();
             }
 
-            _context.Weapons.Remove(weapon);
+            _context.Characters.Remove(character);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool WeaponExists(int id)
+        private bool CharacterExists(int id)
         {
-            return (_context.Weapons?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Characters?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

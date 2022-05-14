@@ -12,55 +12,55 @@ namespace Lab02.CharactersAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class WeaponController : ControllerBase
+    public class SkillController : ControllerBase
     {
         private readonly CharactersDbContext _context;
 
-        public WeaponController(CharactersDbContext context)
+        public SkillController(CharactersDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/Weapon
+        // GET: api/Skill
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Weapon>>> GetWeapons()
+        public async Task<ActionResult<IEnumerable<Skill>>> GetSkills()
         {
-          if (_context.Weapons == null)
+          if (_context.Skills == null)
           {
               return NotFound();
           }
-            return await _context.Weapons.ToListAsync();
+            return await _context.Skills.ToListAsync();
         }
 
-        // GET: api/Weapon/5
+        // GET: api/Skill/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Weapon>> GetWeapon(int id)
+        public async Task<ActionResult<Skill>> GetSkill(int id)
         {
-          if (_context.Weapons == null)
+          if (_context.Skills == null)
           {
               return NotFound();
           }
-            var weapon = await _context.Weapons.FindAsync(id);
+            var skill = await _context.Skills.FindAsync(id);
 
-            if (weapon == null)
+            if (skill == null)
             {
                 return NotFound();
             }
 
-            return weapon;
+            return skill;
         }
 
-        // PUT: api/Weapon/5
+        // PUT: api/Skill/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutWeapon(int id, Weapon weapon)
+        public async Task<IActionResult> PutSkill(int id, Skill skill)
         {
-            if (id != weapon.Id)
+            if (id != skill.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(weapon).State = EntityState.Modified;
+            _context.Entry(skill).State = EntityState.Modified;
 
             try
             {
@@ -68,7 +68,7 @@ namespace Lab02.CharactersAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!WeaponExists(id))
+                if (!SkillExists(id))
                 {
                     return NotFound();
                 }
@@ -81,44 +81,44 @@ namespace Lab02.CharactersAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/Weapon
+        // POST: api/Skill
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Weapon>> PostWeapon(Weapon weapon)
+        public async Task<ActionResult<Skill>> PostSkill(Skill skill)
         {
-          if (_context.Weapons == null)
+          if (_context.Skills == null)
           {
-              return Problem("Entity set 'CharactersDbContext.Weapons'  is null.");
+              return Problem("Entity set 'CharactersDbContext.Skills'  is null.");
           }
-            _context.Weapons.Add(weapon);
+            _context.Skills.Add(skill);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetWeapon", new { id = weapon.Id }, weapon);
+            return CreatedAtAction("GetSkill", new { id = skill.Id }, skill);
         }
 
-        // DELETE: api/Weapon/5
+        // DELETE: api/Skill/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteWeapon(int id)
+        public async Task<IActionResult> DeleteSkill(int id)
         {
-            if (_context.Weapons == null)
+            if (_context.Skills == null)
             {
                 return NotFound();
             }
-            var weapon = await _context.Weapons.FindAsync(id);
-            if (weapon == null)
+            var skill = await _context.Skills.FindAsync(id);
+            if (skill == null)
             {
                 return NotFound();
             }
 
-            _context.Weapons.Remove(weapon);
+            _context.Skills.Remove(skill);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool WeaponExists(int id)
+        private bool SkillExists(int id)
         {
-            return (_context.Weapons?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Skills?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

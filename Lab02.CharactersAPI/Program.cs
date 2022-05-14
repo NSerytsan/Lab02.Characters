@@ -1,6 +1,4 @@
 using Lab02.CharactersAPI.Data;
-using Lab02.CharactersAPI.Helpers;
-using Lab02.CharactersAPI.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,8 +10,6 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
-builder.Services.AddAutoMapper(typeof(MapperConfig));
 
 var app = builder.Build();
 
