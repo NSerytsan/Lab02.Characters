@@ -8,5 +8,5 @@ public class WeaponDto : BaseWeaponDto
     [Required]
     public int Id { get; set; }
 
-    public GetWeaponTypeDto WeaponType {get; set;} = null!;
+    public GetWeaponTypeDto WeaponType { get; set; } = null!;
 }

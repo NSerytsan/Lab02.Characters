@@ -53,8 +53,8 @@ namespace Lab02.CharactersAPI.Controllers
                 return NotFound();
             }
 
-            var weaponDtos = from weapon in weaponType.Weapons
-                             select new WeaponDto
+            var weapons = from weapon in weaponType.Weapons
+                             select new GetWeaponDto
                              {
                                  Id = weapon.Id,
                                  Name = weapon.Name,
@@ -65,7 +65,7 @@ namespace Lab02.CharactersAPI.Controllers
             {
                 Id = weaponType.Id,
                 Name = weaponType.Name,
-                Weapons = weaponDtos.ToList()
+                Weapons = weapons.ToList()
             };
 
             return Ok(weaponTypeDto);
