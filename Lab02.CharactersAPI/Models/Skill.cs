@@ -8,6 +8,7 @@ public class Skill
 {   
     [Key]
     public int Id { get; set; }
+    [Required]
     public string Name { get; set; } = null!;
     public string? Description { get; set; }
     public virtual ICollection<Character> Characters { get; set; } = null!;

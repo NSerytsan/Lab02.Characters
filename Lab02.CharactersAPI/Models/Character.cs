@@ -9,10 +9,13 @@ public class Character
     [Key]
     public int Id { get; set; }
     public int WeaponId { get; set; }
-    public int BiographyId { get; set; }
+    [Required]
     public string Name { get; set; } = null!;
+    [Required]
     public int HealthPoints { get; set; }
+    [Required]
     public int Attack { get; set; }
+    [Required]
     public int Defense { get; set; }
     public string Biography { get; set; } = null!;
     public virtual ICollection<Skill> Skills { get; set; } = null!;
