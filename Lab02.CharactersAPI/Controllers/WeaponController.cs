@@ -32,7 +32,7 @@ namespace Lab02.CharactersAPI.Controllers
                              {
                                  Id = weapon.Id,
                                  Name = weapon.Name,
-                                 Attack = weapon.Id,
+                                 Attack = weapon.Attack,
                                  WeaponTypeId = weapon.WeaponTypeId
                              };
 
@@ -60,14 +60,24 @@ namespace Lab02.CharactersAPI.Controllers
         // PUT: api/Weapon/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutWeapon(int id, Weapon weapon)
+        public async Task<IActionResult> PutWeapon(int id, UpdateWeaponDto updateWeaponDto)
         {
-            if (id != weapon.Id)
+            if (id != updateWeaponDto.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(weapon).State = EntityState.Modified;
+            var weapon = await _context.Weapons.FindAsync(id);
+            if (weapon == null)
+            {
+                return NotFound();
+            }
+
+            weapon.Name = updateWeaponDto.Name;
+            weapon.Attack = updateWeaponDto.Attack;
+            weapon.WeaponTypeId = updateWeaponDto.WeaponTypeId;
+
+            _context.Update(weapon);
 
             try
             {
@@ -91,16 +101,24 @@ namespace Lab02.CharactersAPI.Controllers
         // POST: api/Weapon
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Weapon>> PostWeapon(Weapon weapon)
+        public async Task<ActionResult<CreateWeaponDto>> PostWeapon(CreateWeaponDto createWeaponDto)
         {
             if (_context.Weapons == null)
             {
                 return Problem("Entity set 'CharactersDbContext.Weapons'  is null.");
             }
+
+            var weapon = new Weapon()
+            {
+                Name = createWeaponDto.Name,
+                Attack = createWeaponDto.Attack,
+                WeaponTypeId = createWeaponDto.WeaponTypeId
+            };
+
             _context.Weapons.Add(weapon);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetWeapon", new { id = weapon.Id }, weapon);
+            return CreatedAtAction("GetWeapon", new { id = weapon.Id }, new WeaponDto { Id = weapon.Id, Name = weapon.Name, Attack = weapon.Attack });
         }
 
         // DELETE: api/Weapon/5
