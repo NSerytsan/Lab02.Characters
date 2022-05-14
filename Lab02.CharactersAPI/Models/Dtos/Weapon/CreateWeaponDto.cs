@@ -1,4 +1,4 @@
-namespace Lab02.CharactersAPI.Dtos.Weapon;
+namespace Lab02.CharactersAPI.Models.Dtos.Weapon;
 
 public class CreateWeaponDto : BaseWeaponDto
 {

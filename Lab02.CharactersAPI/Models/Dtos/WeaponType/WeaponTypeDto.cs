@@ -1,6 +1,6 @@
-using Lab02.CharactersAPI.Dtos.Weapon;
+using Lab02.CharactersAPI.Models.Dtos.Weapon;
 
-namespace Lab02.CharactersAPI.Dtos.WeaponType;
+namespace Lab02.CharactersAPI.Models.Dtos.WeaponType;
 
 public class WeaponTypeDto : BaseWeaponTypeDto
 {
