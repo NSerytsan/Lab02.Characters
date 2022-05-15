@@ -39,7 +39,7 @@ public static class DtoConversions
                          Name = skill.Name,
                          Description = skill.Description
                      },
-            Weapon = character.Weapon.ConvertToDto()
+            Weapon = character.Weapon.ToWeaponDto()
         };
     }
 
@@ -111,7 +111,7 @@ public static class DtoConversions
                };
     }
 
-    public static WeaponTypeDto ConvertToDto(this WeaponType weaponType)
+    public static WeaponTypeDto ToWeaponDto(this WeaponType weaponType)
     {
         var weapons = from weapon in weaponType.Weapons
                       select new GetWeaponDto
@@ -142,7 +142,7 @@ public static class DtoConversions
                };
     }
 
-    public static WeaponDto ConvertToDto(this Weapon weapon)
+    public static WeaponDto ToWeaponDto(this Weapon weapon)
     {
         var weaponType = new GetWeaponTypeDto()
         {

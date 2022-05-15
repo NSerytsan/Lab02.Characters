@@ -47,7 +47,7 @@ namespace Lab02.Characters.API.Controllers
                 return NotFound();
             }
 
-            return Ok(weaponType.ConvertToDto());
+            return Ok(weaponType.ToWeaponDto());
         }
 
         // PUT: api/WeaponType/5

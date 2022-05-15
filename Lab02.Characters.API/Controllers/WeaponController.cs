@@ -48,7 +48,7 @@ namespace Lab02.Characters.API.Controllers
                 return NotFound();
             }
 
-            return Ok(weapon.ConvertToDto());
+            return Ok(weapon.ToWeaponDto());
         }
 
         // PUT: api/Weapon/5
@@ -112,7 +112,7 @@ namespace Lab02.Characters.API.Controllers
             _context.Weapons.Add(weapon);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetWeapon", new { id = weapon.Id }, weapon.ConvertToDto());
+            return CreatedAtAction("GetWeapon", new { id = weapon.Id }, weapon.ToWeaponDto());
         }
 
         // DELETE: api/Weapon/5
