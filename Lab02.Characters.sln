@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32319.34
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab02.CharactersAPI", "Lab02.CharactersAPI\Lab02.CharactersAPI.csproj", "{A512D91D-85C2-46FA-91B4-EE00D1E559E9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lab02.Characters.API", "Lab02.CharactersAPI\Lab02.Characters.API.csproj", "{A512D91D-85C2-46FA-91B4-EE00D1E559E9}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{D1665A68-CC1E-4BAC-9753-79FF191CCB69}"
 EndProject

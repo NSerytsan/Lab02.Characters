@@ -1,11 +1,11 @@
+using Lab02.Characters.API.Data;
+using Lab02.Characters.API.Entities;
+using Lab02.Characters.API.Extensions;
+using Lab02.CharactersAPI.Dtos.Character;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Lab02.CharactersAPI.Data;
-using Lab02.CharactersAPI.Models;
-using Lab02.CharactersAPI.Dtos.Character;
-using Lab02.CharactersAPI.Extensions;
 
-namespace Lab02.CharactersAPI.Controllers
+namespace Lab02.Characters.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

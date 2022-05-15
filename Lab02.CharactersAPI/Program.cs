@@ -1,4 +1,4 @@
-using Lab02.CharactersAPI.Data;
+using Lab02.Characters.API.Data;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

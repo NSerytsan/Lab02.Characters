@@ -1,11 +1,11 @@
+using Lab02.Characters.API.Data;
+using Lab02.Characters.API.Entities;
+using Lab02.CharactersAPI.Dtos.Character;
+using Lab02.CharactersAPI.Dtos.Skill;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Lab02.CharactersAPI.Data;
-using Lab02.CharactersAPI.Models;
-using Lab02.CharactersAPI.Dtos.Skill;
-using Lab02.CharactersAPI.Dtos.Character;
 
-namespace Lab02.CharactersAPI.Controllers
+namespace Lab02.Characters.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -65,16 +65,16 @@ namespace Lab02.CharactersAPI.Controllers
             if (skill.Characters is not null)
             {
                 var characters = from character in skill.Characters
-                select new GetCharacterDto()
-                {
-                    Id = character.Id,
-                    Name = character.Name,
-                    Attack = character.Attack,
-                    Defense = character.Defense,
-                    HealthPoints = character.HealthPoints,
-                    Biography = character.Biography,
-                    WeaponId = character.WeaponId
-                };
+                                 select new GetCharacterDto()
+                                 {
+                                     Id = character.Id,
+                                     Name = character.Name,
+                                     Attack = character.Attack,
+                                     Defense = character.Defense,
+                                     HealthPoints = character.HealthPoints,
+                                     Biography = character.Biography,
+                                     WeaponId = character.WeaponId
+                                 };
             }
 
             return skillDto;

@@ -1,5 +1,5 @@
-using System.ComponentModel.DataAnnotations;
 using Lab02.CharactersAPI.Dtos.WeaponType;
+using System.ComponentModel.DataAnnotations;
 
 namespace Lab02.CharactersAPI.Dtos.Weapon;
 

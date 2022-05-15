@@ -1,10 +1,10 @@
+using Lab02.Characters.API.Entities;
 using Lab02.CharactersAPI.Dtos.Character;
 using Lab02.CharactersAPI.Dtos.Skill;
 using Lab02.CharactersAPI.Dtos.Weapon;
 using Lab02.CharactersAPI.Dtos.WeaponType;
-using Lab02.CharactersAPI.Models;
 
-namespace Lab02.CharactersAPI.Extensions;
+namespace Lab02.Characters.API.Extensions;
 
 public static class DtoConversions
 {
