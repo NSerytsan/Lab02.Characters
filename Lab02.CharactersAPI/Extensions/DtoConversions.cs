@@ -1,27 +1,28 @@
-using Lab02.CharactersAPI.Data;
 using Lab02.CharactersAPI.Dtos.Character;
 using Lab02.CharactersAPI.Dtos.Skill;
+using Lab02.CharactersAPI.Dtos.WeaponType;
 using Lab02.CharactersAPI.Models;
 
 namespace Lab02.CharactersAPI.Extensions;
 
 public static class DtoConversions
 {
+    // Character
     public static IEnumerable<GetCharacterDto> ConvertToDto(this IEnumerable<Character> characters)
     {
-        return (from character in characters
-                select new GetCharacterDto()
-                {
-                    Id = character.Id,
-                    Name = character.Name,
-                    HealthPoints = character.HealthPoints,
-                    Attack = character.Attack,
-                    Defense = character.Defense,
-                    Biography = character.Biography,
-                    WeaponId = character.WeaponId,
-                    Skills = from skill in character.Skills
-                             select skill.Id
-                }).ToList();
+        return from character in characters
+               select new GetCharacterDto()
+               {
+                   Id = character.Id,
+                   Name = character.Name,
+                   HealthPoints = character.HealthPoints,
+                   Attack = character.Attack,
+                   Defense = character.Defense,
+                   Biography = character.Biography,
+                   WeaponId = character.WeaponId,
+                   Skills = from skill in character.Skills
+                            select skill.Id
+               };
     }
 
     public static CharacterDto ConvertToDto(this Character character)
@@ -37,7 +38,7 @@ public static class DtoConversions
             WeaponId = character.WeaponId,
             Skills = from skill in character.Skills
                      select new GetSkillDto()
-                     { 
+                     {
                          Id = skill.Id,
                          Name = skill.Name,
                          Description = skill.Description
@@ -68,5 +69,16 @@ public static class DtoConversions
         }
 
         return character;
+    }
+
+    //WeaponType
+    public static IEnumerable<GetWeaponTypeDto> ConvertToDto(this IEnumerable<WeaponType> weaponTypes)
+    {
+        return from weaponType in weaponTypes
+               select new GetWeaponTypeDto
+               {
+                   Id = weaponType.Id,
+                   Name = weaponType.Name
+               };
     }
 }

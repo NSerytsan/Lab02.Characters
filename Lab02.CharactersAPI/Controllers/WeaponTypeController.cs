@@ -4,6 +4,7 @@ using Lab02.CharactersAPI.Data;
 using Lab02.CharactersAPI.Models;
 using Lab02.CharactersAPI.Dtos.WeaponType;
 using Lab02.CharactersAPI.Dtos.Weapon;
+using Lab02.CharactersAPI.Extensions;
 
 namespace Lab02.CharactersAPI.Controllers
 {
@@ -28,14 +29,8 @@ namespace Lab02.CharactersAPI.Controllers
             }
 
             var weaponTypes = await _context.WeaponTypes.ToListAsync();
-            var getWeaponTypeDtos = from weaponType in weaponTypes
-                                    select new GetWeaponTypeDto
-                                    {
-                                        Id = weaponType.Id,
-                                        Name = weaponType.Name
-                                    };
 
-            return Ok(getWeaponTypeDtos);
+            return Ok(weaponTypes.ConvertToDto());
         }
 
         // GET: api/WeaponType/5
@@ -54,12 +49,12 @@ namespace Lab02.CharactersAPI.Controllers
             }
 
             var weapons = from weapon in weaponType.Weapons
-                             select new GetWeaponDto
-                             {
-                                 Id = weapon.Id,
-                                 Name = weapon.Name,
-                                 Attack = weapon.Attack
-                             };
+                          select new GetWeaponDto
+                          {
+                              Id = weapon.Id,
+                              Name = weapon.Name,
+                              Attack = weapon.Attack
+                          };
 
             var weaponTypeDto = new WeaponTypeDto()
             {

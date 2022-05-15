@@ -26,6 +26,7 @@ namespace Lab02.CharactersAPI.Controllers
             {
                 return NotFound();
             }
+
             var characters = await _context.Characters.Include(c => c.Skills).ToListAsync();
 
             return Ok(characters.ConvertToDto());
