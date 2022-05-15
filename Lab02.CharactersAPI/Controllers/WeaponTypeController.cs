@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Lab02.CharactersAPI.Data;
 using Lab02.CharactersAPI.Models;
 using Lab02.CharactersAPI.Dtos.WeaponType;
-using Lab02.CharactersAPI.Dtos.Weapon;
 using Lab02.CharactersAPI.Extensions;
 
 namespace Lab02.CharactersAPI.Controllers
@@ -48,22 +47,7 @@ namespace Lab02.CharactersAPI.Controllers
                 return NotFound();
             }
 
-            var weapons = from weapon in weaponType.Weapons
-                          select new GetWeaponDto
-                          {
-                              Id = weapon.Id,
-                              Name = weapon.Name,
-                              Attack = weapon.Attack
-                          };
-
-            var weaponTypeDto = new WeaponTypeDto()
-            {
-                Id = weaponType.Id,
-                Name = weaponType.Name,
-                Weapons = weapons.ToList()
-            };
-
-            return Ok(weaponTypeDto);
+            return Ok(weaponType.ConvertToDto());
         }
 
         // PUT: api/WeaponType/5

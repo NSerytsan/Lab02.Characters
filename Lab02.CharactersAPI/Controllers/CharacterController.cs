@@ -20,14 +20,14 @@ namespace Lab02.CharactersAPI.Controllers
 
         // GET: api/Character
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<GetCharacterDto>>> GetCharacters()
+        public async Task<ActionResult<IEnumerable<CharacterDto>>> GetCharacters()
         {
             if (_context.Characters == null)
             {
                 return NotFound();
             }
 
-            var characters = await _context.Characters.Include(c => c.Skills).ToListAsync();
+            var characters = await _context.Characters.Include(c => c.Skills).Include(c => c.Weapon).ThenInclude(w => w.WeaponType).ToListAsync();
 
             return Ok(characters.ConvertToDto());
         }
@@ -41,7 +41,7 @@ namespace Lab02.CharactersAPI.Controllers
                 return NotFound();
             }
 
-            var character = await _context.Characters.Include(c => c.Skills).Include(c => c.Weapon).FirstOrDefaultAsync(c => c.Id == id);
+            var character = await _context.Characters.Include(c => c.Skills).Include(c => c.Weapon).ThenInclude(w => w.WeaponType).FirstOrDefaultAsync(c => c.Id == id);
 
             if (character == null)
             {

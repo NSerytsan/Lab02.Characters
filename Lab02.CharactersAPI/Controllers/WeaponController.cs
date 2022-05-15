@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Lab02.CharactersAPI.Data;
 using Lab02.CharactersAPI.Models;
 using Lab02.CharactersAPI.Dtos.Weapon;
-using Lab02.CharactersAPI.Dtos.WeaponType;
+using Lab02.CharactersAPI.Extensions;
 
 namespace Lab02.CharactersAPI.Controllers
 {
@@ -28,16 +28,8 @@ namespace Lab02.CharactersAPI.Controllers
             }
 
             var weapons = await _context.Weapons.ToListAsync();
-            var weaponDtos = from weapon in weapons
-                             select new GetWeaponDto
-                             {
-                                 Id = weapon.Id,
-                                 Name = weapon.Name,
-                                 Attack = weapon.Attack,
-                                 WeaponTypeId = weapon.WeaponTypeId
-                             };
 
-            return Ok(weaponDtos);
+            return Ok(weapons.ConvertToDto());
         }
 
         // GET: api/Weapon/5
@@ -56,22 +48,7 @@ namespace Lab02.CharactersAPI.Controllers
                 return NotFound();
             }
 
-            var weaponType = new GetWeaponTypeDto()
-            {
-                Id = weapon.WeaponType.Id,
-                Name = weapon.WeaponType.Name
-            };
-
-            var weaponDto = new WeaponDto()
-            {
-                Id = weapon.Id,
-                Name = weapon.Name,
-                Attack = weapon.Attack,
-                WeaponTypeId = weapon.WeaponTypeId,
-                WeaponType = weaponType
-            };
-
-            return Ok(weaponDto);
+            return Ok(weapon.ConvertToDto());
         }
 
         // PUT: api/Weapon/5
@@ -135,7 +112,7 @@ namespace Lab02.CharactersAPI.Controllers
             _context.Weapons.Add(weapon);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetWeapon", new { id = weapon.Id }, new WeaponDto { Id = weapon.Id, Name = weapon.Name, Attack = weapon.Attack });
+            return CreatedAtAction("GetWeapon", new { id = weapon.Id }, weapon.ConvertToDto());
         }
 
         // DELETE: api/Weapon/5
