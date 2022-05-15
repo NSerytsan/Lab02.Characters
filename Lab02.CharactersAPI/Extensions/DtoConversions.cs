@@ -1,7 +1,7 @@
 using Lab02.Characters.API.Entities;
-using Lab02.CharactersAPI.Dtos.Character;
-using Lab02.CharactersAPI.Dtos.Skill;
-using Lab02.CharactersAPI.Dtos.Weapon;
+using Lab02.Characters.Models.Dtos.Character;
+using Lab02.Characters.Models.Dtos.Skill;
+using Lab02.Characters.Models.Dtos.Weapon;
 using Lab02.CharactersAPI.Dtos.WeaponType;
 
 namespace Lab02.Characters.API.Extensions;
