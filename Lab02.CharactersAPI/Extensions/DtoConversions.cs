@@ -1,5 +1,6 @@
 using Lab02.CharactersAPI.Data;
 using Lab02.CharactersAPI.Dtos.Character;
+using Lab02.CharactersAPI.Dtos.Skill;
 using Lab02.CharactersAPI.Models;
 
 namespace Lab02.CharactersAPI.Extensions;
@@ -33,32 +34,39 @@ public static class DtoConversions
             Attack = character.Attack,
             Defense = character.Defense,
             Biography = character.Biography,
-            WeaponId = character.WeaponId
+            WeaponId = character.WeaponId,
+            Skills = from skill in character.Skills
+                     select new GetSkillDto()
+                     { 
+                         Id = skill.Id,
+                         Name = skill.Name,
+                         Description = skill.Description
+                     }
         };
     }
 
-    public static Character ConvertFromDto(this CreateCharacterDto createCharacterDto, CharactersDbContext context)
+    public static Character ConvertFromDto(this CreateCharacterDto createCharacterDto, IEnumerable<Skill> skills)
     {
-         var character = new Character()
-            {
-                Name = createCharacterDto.Name,
-                HealthPoints = createCharacterDto.HealthPoints,
-                Attack = createCharacterDto.Attack,
-                Defense = createCharacterDto.Defense,
-                WeaponId = createCharacterDto.WeaponId,
-                Biography = createCharacterDto.Biography,
-                Skills = new HashSet<Skill>()
-            };
+        var character = new Character()
+        {
+            Name = createCharacterDto.Name,
+            HealthPoints = createCharacterDto.HealthPoints,
+            Attack = createCharacterDto.Attack,
+            Defense = createCharacterDto.Defense,
+            WeaponId = createCharacterDto.WeaponId,
+            Biography = createCharacterDto.Biography,
+            Skills = new HashSet<Skill>()
+        };
 
-            foreach (var skillId in createCharacterDto.Skills)
+        foreach (var skillId in createCharacterDto.Skills)
+        {
+            var skill = skills.FirstOrDefault(s => s.Id == skillId);
+            if (skill != null)
             {
-                var skill = context.Skills.Find(skillId);
-                if (skill != null)
-                {
-                    character.Skills.Add(skill);
-                }
+                character.Skills.Add(skill);
             }
+        }
 
-            return character;
+        return character;
     }
 }

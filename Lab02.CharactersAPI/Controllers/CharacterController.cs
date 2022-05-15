@@ -33,14 +33,14 @@ namespace Lab02.CharactersAPI.Controllers
 
         // GET: api/Character/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<GetCharacterDto>> GetCharacter(int id)
+        public async Task<ActionResult<CharacterDto>> GetCharacter(int id)
         {
             if (_context.Characters == null)
             {
                 return NotFound();
             }
 
-            var character = await _context.Characters.Include(c => c.Skills).FirstOrDefaultAsync(c => c.Id == id);
+            var character = await _context.Characters.Include(c => c.Skills).Include(c => c.Weapon).FirstOrDefaultAsync(c => c.Id == id);
 
             if (character == null)
             {
@@ -91,7 +91,7 @@ namespace Lab02.CharactersAPI.Controllers
                 return Problem("Entity set 'CharactersDbContext.Characters'  is null.");
             }
 
-            var character = createCharacterDto.ConvertFromDto(_context);
+            var character = createCharacterDto.ConvertFromDto(_context.Skills);
 
             _context.Characters.Add(character);
             await _context.SaveChangesAsync();
