@@ -9,13 +9,19 @@ namespace Lab02.Characters.API.Extensions;
 public static class DtoConversions
 {
     // Character
-    public static IEnumerable<CharacterDto> ConvertToDto(this IEnumerable<Character> characters)
+    public static IEnumerable<CharacterDto> ToCharacterDtos(this IEnumerable<Character> characters)
     {
         return from character in characters
-               select character.ConvertToDto();
+               select character.ToCharacterDto();
     }
 
-    public static CharacterDto ConvertToDto(this Character character)
+    public static IEnumerable<OnlyCharacterDto> ToOnlyCharacterDtos(this IEnumerable<Character> characters)
+    {
+        return from character in characters
+               select character.ToOnlyCharacterDto();
+    }
+
+    public static CharacterDto ToCharacterDto(this Character character)
     {
         return new CharacterDto()
         {
@@ -34,6 +40,20 @@ public static class DtoConversions
                          Description = skill.Description
                      },
             Weapon = character.Weapon.ConvertToDto()
+        };
+    }
+
+    public static OnlyCharacterDto ToOnlyCharacterDto(this Character character)
+    {
+        return new OnlyCharacterDto()
+        {
+            Id = character.Id,
+            Name = character.Name,
+            HealthPoints = character.HealthPoints,
+            Attack = character.Attack,
+            Defense = character.Defense,
+            Biography = character.Biography,
+            WeaponId = character.WeaponId
         };
     }
 
@@ -120,5 +140,18 @@ public static class DtoConversions
             WeaponTypeId = weapon.WeaponTypeId,
             WeaponType = weaponType
         };
+    }
+
+    // Skill
+    public static IEnumerable<SkillDto> ConvertToDto(this IEnumerable<Skill> skills)
+    {
+        return from skill in skills
+               select new SkillDto()
+               {
+                   Id = skill.Id,
+                   Name = skill.Name,
+                   Description = skill.Description,
+                   Characters = skill.Characters.ToOnlyCharacterDtos()
+               };
     }
 }

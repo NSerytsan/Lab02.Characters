@@ -2,6 +2,7 @@ using Lab02.Characters.API.Data;
 using Lab02.Characters.API.Entities;
 using Lab02.Characters.Models.Dtos.Character;
 using Lab02.Characters.Models.Dtos.Skill;
+using Lab02.Characters.API.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,23 +21,16 @@ namespace Lab02.Characters.API.Controllers
 
         // GET: api/Skill
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<GetSkillDto>>> GetSkills()
+        public async Task<ActionResult<IEnumerable<SkillDto>>> GetSkills()
         {
             if (_context.Skills == null)
             {
                 return NotFound();
             }
 
-            var skills = await _context.Skills.ToListAsync();
-            var skillDtos = from skill in skills
-                            select new GetSkillDto()
-                            {
-                                Id = skill.Id,
-                                Name = skill.Name,
-                                Description = skill.Description
-                            };
+            var skills = await _context.Skills.Include(s => s.Characters).ThenInclude(c => c.Weapon).ToListAsync();
 
-            return Ok(skillDtos);
+            return Ok(skills.ConvertToDto());
         }
 
         // GET: api/Skill/5
@@ -48,7 +42,7 @@ namespace Lab02.Characters.API.Controllers
                 return NotFound();
             }
 
-            var skill = await _context.Skills.Include(s => s.Characters).FirstOrDefaultAsync(s => s.Id == id);
+            var skill = await _context.Skills.Include(s => s.Characters).ThenInclude(c => c.Weapon).FirstOrDefaultAsync(s => s.Id == id);
 
             if (skill == null)
             {
@@ -65,7 +59,7 @@ namespace Lab02.Characters.API.Controllers
             if (skill.Characters is not null)
             {
                 var characters = from character in skill.Characters
-                                 select new GetCharacterDto()
+                                 select new OnlyCharacterDto()
                                  {
                                      Id = character.Id,
                                      Name = character.Name,

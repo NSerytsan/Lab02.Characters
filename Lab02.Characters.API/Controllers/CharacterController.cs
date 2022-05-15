@@ -29,7 +29,7 @@ namespace Lab02.Characters.API.Controllers
 
             var characters = await _context.Characters.Include(c => c.Skills).Include(c => c.Weapon).ThenInclude(w => w.WeaponType).ToListAsync();
 
-            return Ok(characters.ConvertToDto());
+            return Ok(characters.ToOnlyCharacterDtos());
         }
 
         // GET: api/Character/5
@@ -48,7 +48,7 @@ namespace Lab02.Characters.API.Controllers
                 return NotFound();
             }
 
-            return Ok(character.ConvertToDto());
+            return Ok(character.ToOnlyCharacterDto());
         }
 
         // PUT: api/Character/5
@@ -97,7 +97,7 @@ namespace Lab02.Characters.API.Controllers
             _context.Characters.Add(character);
             await _context.SaveChangesAsync();
 
-            CharacterDto responseDto = character.ConvertToDto();
+            CharacterDto responseDto = character.ToCharacterDto();
 
             return CreatedAtAction("GetCharacter", new { id = responseDto.Id }, responseDto);
         }
