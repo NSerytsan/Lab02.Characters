@@ -29,7 +29,7 @@ namespace Lab02.Characters.API.Controllers
 
             var characters = await _context.Characters.Include(c => c.Skills).Include(c => c.Weapon).ThenInclude(w => w.WeaponType).ToListAsync();
 
-            return Ok(characters.ToOnlyCharacterDtos());
+            return Ok(characters.ToCharacterDtos());
         }
 
         // GET: api/Character/5
@@ -48,7 +48,7 @@ namespace Lab02.Characters.API.Controllers
                 return NotFound();
             }
 
-            return Ok(character.ToOnlyCharacterDto());
+            return Ok(character.ToCharacterDto());
         }
 
         // PUT: api/Character/5
@@ -92,7 +92,7 @@ namespace Lab02.Characters.API.Controllers
                 return Problem("Entity set 'CharactersDbContext.Characters'  is null.");
             }
 
-            var character = createCharacterDto.ConvertFromDto(_context.Skills);
+            var character = createCharacterDto.FromCreateCharacterDto(_context.Skills);
 
             _context.Characters.Add(character);
             await _context.SaveChangesAsync();

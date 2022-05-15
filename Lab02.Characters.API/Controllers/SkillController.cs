@@ -30,7 +30,7 @@ namespace Lab02.Characters.API.Controllers
 
             var skills = await _context.Skills.Include(s => s.Characters).ThenInclude(c => c.Weapon).ToListAsync();
 
-            return Ok(skills.ConvertToDto());
+            return Ok(skills.ToSkillDtos());
         }
 
         // GET: api/Skill/5
@@ -49,29 +49,7 @@ namespace Lab02.Characters.API.Controllers
                 return NotFound();
             }
 
-            var skillDto = new SkillDto()
-            {
-                Id = skill.Id,
-                Name = skill.Name,
-                Description = skill.Description
-            };
-
-            if (skill.Characters is not null)
-            {
-                var characters = from character in skill.Characters
-                                 select new OnlyCharacterDto()
-                                 {
-                                     Id = character.Id,
-                                     Name = character.Name,
-                                     Attack = character.Attack,
-                                     Defense = character.Defense,
-                                     HealthPoints = character.HealthPoints,
-                                     Biography = character.Biography,
-                                     WeaponId = character.WeaponId
-                                 };
-            }
-
-            return skillDto;
+            return skill.ToSkillDto();
         }
 
         // PUT: api/Skill/5

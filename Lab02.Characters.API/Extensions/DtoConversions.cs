@@ -57,7 +57,7 @@ public static class DtoConversions
         };
     }
 
-    public static Character ConvertFromDto(this CreateCharacterDto createCharacterDto, IEnumerable<Skill> skills)
+    public static Character FromCreateCharacterDto(this CreateCharacterDto createCharacterDto, IEnumerable<Skill> skills)
     {
         var character = new Character()
         {
@@ -70,7 +70,7 @@ public static class DtoConversions
             Skills = new HashSet<Skill>()
         };
 
-        foreach (var skillId in createCharacterDto.Skills)
+        foreach (var skillId in createCharacterDto.SkillIds)
         {
             var skill = skills.FirstOrDefault(s => s.Id == skillId);
             if (skill != null)
@@ -80,6 +80,24 @@ public static class DtoConversions
         }
 
         return character;
+    }
+
+    // Skill
+    public static IEnumerable<SkillDto> ToSkillDtos(this IEnumerable<Skill> skills)
+    {
+        return from skill in skills
+               select skill.ToSkillDto();
+    }
+
+    public static SkillDto ToSkillDto(this Skill skill)
+    {
+        return new SkillDto()
+        {
+            Id = skill.Id,
+            Name = skill.Name,
+            Description = skill.Description,
+            Characters = skill.Characters.ToOnlyCharacterDtos()
+        };
     }
 
     //WeaponType
@@ -140,18 +158,5 @@ public static class DtoConversions
             WeaponTypeId = weapon.WeaponTypeId,
             WeaponType = weaponType
         };
-    }
-
-    // Skill
-    public static IEnumerable<SkillDto> ConvertToDto(this IEnumerable<Skill> skills)
-    {
-        return from skill in skills
-               select new SkillDto()
-               {
-                   Id = skill.Id,
-                   Name = skill.Name,
-                   Description = skill.Description,
-                   Characters = skill.Characters.ToOnlyCharacterDtos()
-               };
     }
 }
