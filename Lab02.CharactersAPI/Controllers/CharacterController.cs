@@ -91,30 +91,14 @@ namespace Lab02.CharactersAPI.Controllers
                 return Problem("Entity set 'CharactersDbContext.Characters'  is null.");
             }
 
-            var character = new Character()
-            {
-                Name = createCharacterDto.Name,
-                HealthPoints = createCharacterDto.HealthPoints,
-                Attack = createCharacterDto.Attack,
-                Defense = createCharacterDto.Defense,
-                WeaponId = createCharacterDto.WeaponId,
-                Biography = createCharacterDto.Biography,
-                Skills = new HashSet<Skill>()
-            };
-
-            foreach (var skillId in createCharacterDto.Skills)
-            {
-                var skill = await _context.Skills.FindAsync(skillId);
-                if (skill != null)
-                {
-                    character.Skills.Add(skill);
-                }
-            }
+            var character = createCharacterDto.ConvertFromDto(_context);
 
             _context.Characters.Add(character);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCharacter", new { id = character.Id }, character);
+            CharacterDto responseDto = character.ConvertToDto();
+
+            return CreatedAtAction("GetCharacter", new { id = responseDto.Id }, responseDto);
         }
 
         // DELETE: api/Character/5
