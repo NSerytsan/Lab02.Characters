@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using Lab02.CharactersAPI.Dtos.Skill;
 
 namespace Lab02.CharactersAPI.Dtos.Character;
 
