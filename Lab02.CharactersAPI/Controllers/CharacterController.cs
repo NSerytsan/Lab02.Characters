@@ -28,7 +28,7 @@ namespace Lab02.CharactersAPI.Controllers
             }
             var characters = await _context.Characters.Include(c => c.Skills).ToListAsync();
 
-            return Ok(characters.GetCharacterDto());
+            return Ok(characters.ConvertToDto());
         }
 
         // GET: api/Character/5
@@ -47,18 +47,7 @@ namespace Lab02.CharactersAPI.Controllers
                 return NotFound();
             }
 
-            var dto = new CharacterDto()
-            {
-                Id = character.Id,
-                Name = character.Name,
-                HealthPoints = character.HealthPoints,
-                Attack = character.Attack,
-                Defense = character.Defense,
-                Biography = character.Biography,
-                WeaponId = character.WeaponId
-            };
-
-            return Ok(dto);
+            return Ok(character.ConvertToDto());
         }
 
         // PUT: api/Character/5
