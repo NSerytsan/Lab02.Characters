@@ -112,6 +112,11 @@ namespace Lab02.Characters.API.Controllers
             
             weapon = await _context.Weapons.Include(w => w.WeaponType).FirstOrDefaultAsync(w => w.Id == weapon.Id);
 
+            if (weapon == null)
+            {
+                return NotFound();
+            }
+
             return CreatedAtAction("GetWeapon", new { id = weapon.Id }, weapon.ToWeaponDto());
         }
 
