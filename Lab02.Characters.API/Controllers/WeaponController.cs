@@ -20,14 +20,14 @@ namespace Lab02.Characters.API.Controllers
 
         // GET: api/Weapon
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<GetWeaponDto>>> GetWeapons()
+        public async Task<ActionResult<IEnumerable<WeaponDto>>> GetWeapons()
         {
             if (_context.Weapons == null)
             {
                 return NotFound();
             }
 
-            return Ok(await _context.Weapons.Select(w => w.ToWeaponDto()).ToListAsync());
+            return Ok(await _context.Weapons.Include(w => w.WeaponType).Select(w => w.ToWeaponDto()).ToListAsync());
         }
 
         // GET: api/Weapon/5
@@ -109,6 +109,8 @@ namespace Lab02.Characters.API.Controllers
 
             _context.Weapons.Add(weapon);
             await _context.SaveChangesAsync();
+            
+            weapon = await _context.Weapons.Include(w => w.WeaponType).FirstOrDefaultAsync(w => w.Id == weapon.Id);
 
             return CreatedAtAction("GetWeapon", new { id = weapon.Id }, weapon.ToWeaponDto());
         }

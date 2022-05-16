@@ -120,7 +120,7 @@ public static class DtoConversions
     }
 
     //WeaponType
-    public static IEnumerable<OnlyWeaponTypeDto> ConvertToDto(this IEnumerable<WeaponType> weaponTypes)
+    public static IEnumerable<OnlyWeaponTypeDto> ToOnlyWeaponDto(this IEnumerable<WeaponType> weaponTypes)
     {
         return from weaponType in weaponTypes
                select new OnlyWeaponTypeDto
@@ -133,7 +133,7 @@ public static class DtoConversions
     public static WeaponTypeDto ToWeaponTypeDto(this WeaponType weaponType)
     {
         var weapons = from weapon in weaponType.Weapons
-                      select new GetWeaponDto
+                      select new OnlyWeaponDto
                       {
                           Id = weapon.Id,
                           Name = weapon.Name,
