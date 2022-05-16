@@ -99,9 +99,12 @@ namespace Lab02.Characters.API.Controllers
 
             character = await _context.Characters.Include(c => c.Skills).Include(c => c.Weapon).ThenInclude(w => w.WeaponType).FirstOrDefaultAsync(c => c.Id == character.Id);
 
-            CharacterDto responseDto = character.ToCharacterDto();
+            if (character == null)
+            {
+                return NotFound();
+            }
 
-            return CreatedAtAction("GetCharacter", new { id = responseDto.Id }, responseDto);
+            return CreatedAtAction("GetCharacter", new { id = character.Id }, character.ToCharacterDto());
         }
 
         // DELETE: api/Character/5
