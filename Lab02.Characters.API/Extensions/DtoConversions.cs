@@ -137,7 +137,8 @@ public static class DtoConversions
                       {
                           Id = weapon.Id,
                           Name = weapon.Name,
-                          Attack = weapon.Attack
+                          Attack = weapon.Attack,
+                          WeaponTypeId = weapon.WeaponTypeId
                       };
 
         return new WeaponTypeDto()
