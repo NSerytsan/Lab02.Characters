@@ -100,18 +100,37 @@ public static class DtoConversions
         };
     }
 
+    //Weapon
+    public static WeaponDto ToWeaponDto(this Weapon weapon)
+    {
+        var weaponType = new OnlyWeaponTypeDto()
+        {
+            Id = weapon.WeaponType.Id,
+            Name = weapon.WeaponType.Name
+        };
+
+        return new WeaponDto()
+        {
+            Id = weapon.Id,
+            Name = weapon.Name,
+            Attack = weapon.Attack,
+            WeaponTypeId = weapon.WeaponTypeId,
+            WeaponType = weaponType
+        };
+    }
+
     //WeaponType
-    public static IEnumerable<GetWeaponTypeDto> ConvertToDto(this IEnumerable<WeaponType> weaponTypes)
+    public static IEnumerable<OnlyWeaponTypeDto> ConvertToDto(this IEnumerable<WeaponType> weaponTypes)
     {
         return from weaponType in weaponTypes
-               select new GetWeaponTypeDto
+               select new OnlyWeaponTypeDto
                {
                    Id = weaponType.Id,
                    Name = weaponType.Name
                };
     }
 
-    public static WeaponTypeDto ToWeaponDto(this WeaponType weaponType)
+    public static WeaponTypeDto ToWeaponTypeDto(this WeaponType weaponType)
     {
         var weapons = from weapon in weaponType.Weapons
                       select new GetWeaponDto
@@ -126,37 +145,6 @@ public static class DtoConversions
             Id = weaponType.Id,
             Name = weaponType.Name,
             Weapons = weapons.ToList()
-        };
-    }
-
-    //Weapon
-    public static IEnumerable<GetWeaponDto> ConvertToDto(this IEnumerable<Weapon> weapons)
-    {
-        return from weapon in weapons
-               select new GetWeaponDto
-               {
-                   Id = weapon.Id,
-                   Name = weapon.Name,
-                   Attack = weapon.Attack,
-                   WeaponTypeId = weapon.WeaponTypeId
-               };
-    }
-
-    public static WeaponDto ToWeaponDto(this Weapon weapon)
-    {
-        var weaponType = new GetWeaponTypeDto()
-        {
-            Id = weapon.WeaponType.Id,
-            Name = weapon.WeaponType.Name
-        };
-
-        return new WeaponDto()
-        {
-            Id = weapon.Id,
-            Name = weapon.Name,
-            Attack = weapon.Attack,
-            WeaponTypeId = weapon.WeaponTypeId,
-            WeaponType = weaponType
         };
     }
 }

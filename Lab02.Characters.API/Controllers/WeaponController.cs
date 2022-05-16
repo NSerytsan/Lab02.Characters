@@ -27,9 +27,7 @@ namespace Lab02.Characters.API.Controllers
                 return NotFound();
             }
 
-            var weapons = await _context.Weapons.ToListAsync();
-
-            return Ok(weapons.ConvertToDto());
+            return Ok(await _context.Weapons.Select(w => w.ToWeaponDto()).ToListAsync());
         }
 
         // GET: api/Weapon/5

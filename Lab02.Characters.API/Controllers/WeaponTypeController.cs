@@ -20,16 +20,14 @@ namespace Lab02.Characters.API.Controllers
 
         // GET: api/WeaponType
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<GetWeaponTypeDto>>> GetWeaponTypes()
+        public async Task<ActionResult<IEnumerable<WeaponTypeDto>>> GetWeaponTypes()
         {
             if (_context.WeaponTypes == null)
             {
                 return NotFound();
             }
 
-            var weaponTypes = await _context.WeaponTypes.ToListAsync();
-
-            return Ok(weaponTypes.ConvertToDto());
+            return Ok(await _context.WeaponTypes.Include(wt => wt.Weapons).Select(wt => wt.ToWeaponTypeDto()).ToListAsync());
         }
 
         // GET: api/WeaponType/5
@@ -47,7 +45,7 @@ namespace Lab02.Characters.API.Controllers
                 return NotFound();
             }
 
-            return Ok(weaponType.ToWeaponDto());
+            return Ok(weaponType.ToWeaponTypeDto());
         }
 
         // PUT: api/WeaponType/5
