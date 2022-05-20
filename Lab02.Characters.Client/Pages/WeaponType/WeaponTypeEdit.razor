@@ -1,12 +1,12 @@
-@page "/weapontype/create"
 @page "/weapontype/edit/{id:int}"
 @inject IWeaponTypeService _weaponTypeService
+@inject NavigationManager _navigationManager
 
 <div class="row my-2">
     <h3 class="card-title text-primary mb-3 ml-3">@Title Тип Зброї</h3>
 
     <div class="col-md-10">
-        <EditForm Model="WeaponType" OnValidSubmit="ProcessWeaponType">
+        <EditForm Model="WeaponType" OnValidSubmit="UpdateWeaponType">
             <DataAnnotationsValidator />
             <div class="form-group">
                 <label>Ім'я</label>
@@ -25,18 +25,20 @@
 {
     [Parameter]
     public int Id { get; set; }
-    private string Title { get; set; } = "Створити";
+    private string Title { get; set; } = "Редагувати";
     private WeaponTypeDto WeaponType { get; set; } = new();
 
     protected override async Task OnInitializedAsync()
     {
         if (Id != 0)
         {
-            Title = "Редагувати";
             WeaponType = await _weaponTypeService.GetAsync(Id);
         }
     }
 
-    private void ProcessWeaponType()
-    { }
+    private void UpdateWeaponType()
+    {
+        _weaponTypeService.UpdateAsync(new UpdateWeaponTypeDto { Id = WeaponType.Id, Name = WeaponType.Name });
+        _navigationManager.NavigateTo("weapontype");
+    }
 }

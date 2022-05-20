@@ -6,4 +6,6 @@ public interface IWeaponTypeService
 {
     Task<IEnumerable<WeaponTypeDto>> GetAllAsync();
     Task<WeaponTypeDto> GetAsync(int id);
+    Task<WeaponTypeDto> AddAsync(CreateWeaponTypeDto weaponType);
+    Task UpdateAsync(UpdateWeaponTypeDto weaponType);
 }

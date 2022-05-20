@@ -45,4 +45,23 @@ public class WeaponTypeService : IWeaponTypeService
             throw new Exception($"Http status code: {response.StatusCode} message: {message}");
         }
     }
+
+    public async Task<WeaponTypeDto> AddAsync(CreateWeaponTypeDto weaponType)
+    {
+        var response = await _httpClient.PostAsJsonAsync<CreateWeaponTypeDto>("api/WeaponType", weaponType);
+        if (response.IsSuccessStatusCode)
+        {
+            return await response.Content.ReadFromJsonAsync<WeaponTypeDto>();
+        }
+        else
+        {
+            var message = await response.Content.ReadAsStringAsync();
+            throw new Exception($"Http status:{response.StatusCode} Message -{message}");
+        }
+    }
+
+    public async Task UpdateAsync(UpdateWeaponTypeDto weaponType)
+    {
+        var response = await _httpClient.PutAsJsonAsync<UpdateWeaponTypeDto>($"api/WeaponType/{weaponType.Id}", weaponType);
+    }
 }
