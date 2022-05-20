@@ -47,6 +47,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        WeaponTypes = await _weaponTypeService.GetAll();
+        WeaponTypes = await _weaponTypeService.GetAllAsync();
     }
 }

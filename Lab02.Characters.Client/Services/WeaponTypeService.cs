@@ -13,7 +13,7 @@ public class WeaponTypeService : IWeaponTypeService
         _httpClient = httpClient;
     }
 
-    public async Task<WeaponTypeDto> Get(int id)
+    public async Task<WeaponTypeDto> GetAsync(int id)
     {
         var response = await _httpClient.GetAsync($"api/WeaponType/{id}");
         if (response.IsSuccessStatusCode)
@@ -27,7 +27,7 @@ public class WeaponTypeService : IWeaponTypeService
         }
     }
 
-    public async Task<IEnumerable<WeaponTypeDto>> GetAll()
+    public async Task<IEnumerable<WeaponTypeDto>> GetAllAsync()
     {
         var response = await _httpClient.GetAsync("api/WeaponType");
         if (response.IsSuccessStatusCode)

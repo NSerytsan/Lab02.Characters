@@ -4,6 +4,6 @@ namespace Lab02.Characters.Client.Services.Contracts;
 
 public interface IWeaponTypeService
 {
-    Task<IEnumerable<WeaponTypeDto>> GetAll();
-    Task<WeaponTypeDto> Get(int id);
+    Task<IEnumerable<WeaponTypeDto>> GetAllAsync();
+    Task<WeaponTypeDto> GetAsync(int id);
 }

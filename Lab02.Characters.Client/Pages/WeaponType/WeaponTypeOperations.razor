@@ -1,5 +1,6 @@
 @page "/weapontype/create"
 @page "/weapontype/edit/{id:int}"
+@inject IWeaponTypeService _weaponTypeService
 
 <div class="row my-2">
     <h3 class="card-title text-primary mb-3 ml-3">@Title Тип Зброї</h3>
@@ -27,11 +28,12 @@
     private string Title { get; set; } = "Створити";
     private WeaponTypeDto WeaponType { get; set; } = new();
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         if (Id != 0)
         {
             Title = "Редагувати";
+            WeaponType = await _weaponTypeService.GetAsync(Id);
         }
     }
 
