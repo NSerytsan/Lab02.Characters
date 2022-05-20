@@ -13,9 +13,18 @@ public class WeaponService : IWeaponService
         _httpClient = httpClient;
     }
 
-    public Task<WeaponDto> AddAsync(CreateWeaponDto weaponType)
+    public async Task<WeaponDto> AddAsync(CreateWeaponDto weapon)
     {
-        throw new NotImplementedException();
+        var response = await _httpClient.PostAsJsonAsync<CreateWeaponDto>("api/Weapon", weapon);
+        if (response.IsSuccessStatusCode)
+        {
+            return await response.Content.ReadFromJsonAsync<WeaponDto>();
+        }
+        else
+        {
+            var message = await response.Content.ReadAsStringAsync();
+            throw new Exception($"Http status:{response.StatusCode} Message -{message}");
+        }
     }
 
     public Task DeleteAsync(int id)
@@ -25,7 +34,7 @@ public class WeaponService : IWeaponService
 
     public async Task<IEnumerable<WeaponDto>> GetAllAsync()
     {
-        var response = await _httpClient.GetAsync("api/WeaponType");
+        var response = await _httpClient.GetAsync("api/Weapon");
         if (response.IsSuccessStatusCode)
         {
             if (response.StatusCode == System.Net.HttpStatusCode.NoContent)

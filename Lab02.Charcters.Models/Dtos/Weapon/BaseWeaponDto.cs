@@ -9,5 +9,6 @@ public abstract class BaseWeaponDto
     [Required]
     public int Attack { get; set; }
     [Required]
+    [Range(1, int.MaxValue)]
     public int WeaponTypeId { get; set; }
 }
