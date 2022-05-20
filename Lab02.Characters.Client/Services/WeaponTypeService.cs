@@ -36,7 +36,7 @@ public class WeaponTypeService : IWeaponTypeService
             {
                 return Enumerable.Empty<WeaponTypeDto>();
             }
-            Console.WriteLine(response);
+            
             return await response.Content.ReadFromJsonAsync<IEnumerable<WeaponTypeDto>>();
         }
         else

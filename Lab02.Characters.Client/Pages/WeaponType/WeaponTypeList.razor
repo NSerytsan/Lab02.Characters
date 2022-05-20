@@ -52,6 +52,5 @@
     protected override async Task OnInitializedAsync()
     {
         WeaponTypes = await _weaponTypeService.GetAllAsync();
-        Console.WriteLine(DateTime.Now);
     }
 }

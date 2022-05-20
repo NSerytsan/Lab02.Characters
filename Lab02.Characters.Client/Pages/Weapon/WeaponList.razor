@@ -1,9 +1,17 @@
 ﻿@page "/weapon"
+@using Models.Dtos.Weapon
+@inject IWeaponService _weaponService
+
 
 <PageTitle>Зброя</PageTitle>
 
 <h3>Зброя</h3>
 
 @code {
-    
+    private IEnumerable<WeaponDto> Weapons { get; set; } = new List<WeaponDto>();
+        
+    protected override async Task OnInitializedAsync()
+    {
+        Weapons = await _weaponService.GetAllAsync();
+    }
 }
