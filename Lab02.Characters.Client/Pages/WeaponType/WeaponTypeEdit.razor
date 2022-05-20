@@ -36,9 +36,10 @@
         }
     }
 
-    private void UpdateWeaponType()
+    private async void UpdateWeaponType()
     {
-        _weaponTypeService.UpdateAsync(new UpdateWeaponTypeDto { Id = WeaponType.Id, Name = WeaponType.Name });
+        await _weaponTypeService.UpdateAsync(new UpdateWeaponTypeDto { Id = WeaponType.Id, Name = WeaponType.Name });
         _navigationManager.NavigateTo("weapontype");
+        
     }
 }

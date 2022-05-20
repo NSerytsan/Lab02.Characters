@@ -38,15 +38,20 @@
                 </tbody>
             </table>
         }
+        else
+        {
+            <div class="spinner"></div>
+        }
     </div>
 </div>
 
 @code {
 
     private IEnumerable<WeaponTypeDto> WeaponTypes { get; set; } = new List<WeaponTypeDto>();
-
+        
     protected override async Task OnInitializedAsync()
     {
         WeaponTypes = await _weaponTypeService.GetAllAsync();
+        Console.WriteLine(DateTime.Now);
     }
 }
