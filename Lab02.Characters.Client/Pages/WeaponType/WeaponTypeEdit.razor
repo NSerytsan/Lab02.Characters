@@ -1,4 +1,7 @@
 @page "/weapontype/edit/{id:int}"
+@page "/weapontype/delete/{id:int}"
+@inject NavigationManager _navigationManager
+
 @inject IWeaponTypeService _weaponTypeService
 @inject NavigationManager _navigationManager
 
@@ -14,7 +17,7 @@
                 <ValidationMessage For="()=>WeaponType.Name"></ValidationMessage>
             </div>
             <div class="form-group py-2">
-                <button class="btn btn-primary">@Title</button>
+                <button class=@SubmitButtonClass>@Title</button>
                 <NavLink href="weapontype" class="btn btn-secondary">До списку</NavLink>
             </div>
         </EditForm>
@@ -27,9 +30,18 @@
     public int Id { get; set; }
     private string Title { get; set; } = "Редагувати";
     private WeaponTypeDto WeaponType { get; set; } = new();
+    private bool IsDelete { get; set; } = false;
+    private string SubmitButtonClass { get; set; } = "btn btn-primary";
 
     protected override async Task OnInitializedAsync()
     {
+        IsDelete = _navigationManager.Uri.ToString().Contains("/delete/");
+        if (IsDelete)
+        {
+            Title = "Видалити";
+            SubmitButtonClass = "btn btn-danger";
+        }
+
         if (Id != 0)
         {
             WeaponType = await _weaponTypeService.GetAsync(Id);
@@ -38,8 +50,14 @@
 
     private async void UpdateWeaponType()
     {
-        await _weaponTypeService.UpdateAsync(new UpdateWeaponTypeDto { Id = WeaponType.Id, Name = WeaponType.Name });
+        if (IsDelete)
+        {
+            await _weaponTypeService.DeleteAsync(WeaponType.Id);
+        }
+        {
+            await _weaponTypeService.UpdateAsync(new UpdateWeaponTypeDto { Id = WeaponType.Id, Name = WeaponType.Name });
+        }
         _navigationManager.NavigateTo("weapontype");
-        
+
     }
 }

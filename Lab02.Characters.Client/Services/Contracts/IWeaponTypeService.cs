@@ -8,4 +8,5 @@ public interface IWeaponTypeService
     Task<WeaponTypeDto> GetAsync(int id);
     Task<WeaponTypeDto> AddAsync(CreateWeaponTypeDto weaponType);
     Task UpdateAsync(UpdateWeaponTypeDto weaponType);
+    Task DeleteAsync(int id);
 }

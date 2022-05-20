@@ -64,4 +64,9 @@ public class WeaponTypeService : IWeaponTypeService
     {
         var response = await _httpClient.PutAsJsonAsync<UpdateWeaponTypeDto>($"api/WeaponType/{weaponType.Id}", weaponType);
     }
+
+    public async Task DeleteAsync(int id)
+    {
+        await _httpClient.DeleteAsync($"api/WeaponType/{id}");
+    }
 }
