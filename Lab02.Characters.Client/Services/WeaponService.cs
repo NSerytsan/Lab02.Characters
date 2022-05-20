@@ -18,7 +18,8 @@ public class WeaponService : IWeaponService
         var response = await _httpClient.PostAsJsonAsync<CreateWeaponDto>("api/Weapon", weapon);
         if (response.IsSuccessStatusCode)
         {
-            return await response.Content.ReadFromJsonAsync<WeaponDto>();
+            var result = await response.Content.ReadFromJsonAsync<WeaponDto>();
+            return result ?? new WeaponDto();
         }
         else
         {
@@ -41,8 +42,8 @@ public class WeaponService : IWeaponService
             {
                 return Enumerable.Empty<WeaponDto>();
             }
-
-            return await response.Content.ReadFromJsonAsync<IEnumerable<WeaponDto>>();
+            var result = await response.Content.ReadFromJsonAsync<IEnumerable<WeaponDto>>();
+            return result ?? Enumerable.Empty<WeaponDto>();
         }
         else
         {
