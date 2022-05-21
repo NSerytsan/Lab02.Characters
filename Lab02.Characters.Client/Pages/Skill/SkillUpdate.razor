@@ -60,7 +60,7 @@
             await _skillService.DeleteAsync(Skill.Id);
         }
         {
-            await _skillService.UpdateAsync(new UpdateSkillDto { Id = Skill.Id, Name = Skill.Name });
+            await _skillService.UpdateAsync(new UpdateSkillDto { Id = Skill.Id, Name = Skill.Name, Description = Skill.Description });
         }
         _navigationManager.NavigateTo("skill");
 
