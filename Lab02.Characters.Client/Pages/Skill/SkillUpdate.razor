@@ -1,0 +1,68 @@
+@page "/skill/edit/{id:int}"
+@page "/skill/delete/{id:int}"
+@using Models.Dtos.Skill
+@inject NavigationManager _navigationManager
+@inject ISkillService _skillService
+@inject NavigationManager _navigationManager
+
+<div class="row my-2">
+    <h3 class="card-title text-primary mb-3 ml-3">@Title Навичку</h3>
+
+    <div class="col-md-10">
+        <EditForm Model="Skill" OnValidSubmit="UpdateSkill">
+            <DataAnnotationsValidator />
+            <div class="form-group">
+                <label>Ім'я</label>
+                <InputText @bind-Value="Skill.Name" class="form-control"></InputText>
+                <ValidationMessage For="()=>Skill.Name"></ValidationMessage>
+            </div>
+            <div class="form-group">
+                <label>Опис</label>
+                <InputText @bind-Value="Skill.Description" class="form-control"></InputText>
+                <ValidationMessage For="()=>Skill.Description"></ValidationMessage>
+            </div>
+            <div class="form-group py-2">
+                <button class=@SubmitButtonClass>@Title</button>
+                <NavLink href="skill" class="btn btn-secondary">До списку</NavLink>
+            </div>
+        </EditForm>
+    </div>
+</div>
+
+@code
+{
+    [Parameter]
+    public int Id { get; set; }
+    private string Title { get; set; } = "Редагувати";
+    private SkillDto Skill { get; set; } = new();
+    private bool IsDelete { get; set; } = false;
+    private string SubmitButtonClass { get; set; } = "btn btn-primary";
+
+    protected override async Task OnInitializedAsync()
+    {
+        IsDelete = _navigationManager.Uri.ToString().Contains("/delete/");
+        if (IsDelete)
+        {
+            Title = "Видалити";
+            SubmitButtonClass = "btn btn-danger";
+        }
+
+        if (Id != 0)
+        {
+            Skill = await _skillService.GetAsync(Id);
+        }
+    }
+
+    private async void UpdateSkill()
+    {
+        if (IsDelete)
+        {
+            await _skillService.DeleteAsync(Skill.Id);
+        }
+        {
+            await _skillService.UpdateAsync(new UpdateSkillDto { Id = Skill.Id, Name = Skill.Name });
+        }
+        _navigationManager.NavigateTo("skill");
+
+    }
+}

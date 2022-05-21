@@ -12,9 +12,19 @@ public class SkillService : ISkillService
     {
         _httpClient = httpClient;
     }
-    public Task<SkillDto> AddAsync(CreateSkillDto weaponType)
+    public async Task<SkillDto> AddAsync(CreateSkillDto skill)
     {
-        throw new NotImplementedException();
+        var response = await _httpClient.PostAsJsonAsync<CreateSkillDto>("api/Skill", skill);
+        if (response.IsSuccessStatusCode)
+        {
+            var result = await response.Content.ReadFromJsonAsync<SkillDto>();
+            return result ?? new SkillDto();
+        }
+        else
+        {
+            var message = await response.Content.ReadAsStringAsync();
+            throw new Exception($"Http status:{response.StatusCode} Message -{message}");
+        }
     }
 
     public async Task DeleteAsync(int id)
@@ -42,13 +52,23 @@ public class SkillService : ISkillService
         }
     }
 
-    public Task<SkillDto> GetAsync(int id)
+    public async Task<SkillDto> GetAsync(int id)
     {
-        throw new NotImplementedException();
+        var response = await _httpClient.GetAsync($"api/Skill/{id}");
+        if (response.IsSuccessStatusCode)
+        {
+            var result = await response.Content.ReadFromJsonAsync<SkillDto>();
+            return result ?? new SkillDto();
+        }
+        else
+        {
+            var message = await response.Content.ReadAsStringAsync();
+            throw new Exception($"Http status code: {response.StatusCode} message: {message}");
+        }
     }
 
-    public Task UpdateAsync(UpdateSkillDto weaponType)
+    public async Task UpdateAsync(UpdateSkillDto skill)
     {
-        throw new NotImplementedException();
+        var response = await _httpClient.PutAsJsonAsync<UpdateSkillDto>($"api/Skill/{skill.Id}", skill);
     }
 }
