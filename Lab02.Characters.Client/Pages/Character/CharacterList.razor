@@ -19,7 +19,10 @@
                 <thead>
                     <tr>
                         <th>Ім'я</th>
+                        <th>Здоров'я</th>
                         <th>Атака</th>
+                        <th>Захист</th>
+                        <th>Зброя</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -28,7 +31,10 @@
                     {
                         <tr>
                             <td>@character.Name</td>
+                            <td>@character.HealthPoints</td>
                             <td>@character.Attack</td>
+                            <td>@character.Defense</td>
+                            <td>@character.Weapon.Name</td>
                             <td>
                                 <NavLink href="@($"character/edit/{character.Id}")" class="btn-primary btn">
                                     <i class="bi bi-pencil-square"></i>
