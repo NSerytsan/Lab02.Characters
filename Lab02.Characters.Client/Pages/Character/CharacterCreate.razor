@@ -1,7 +1,7 @@
-@page "/weapon/create"
+@page "/character/create"
+@using Models.Dtos.Character
 @using Models.Dtos.Weapon
-@using Models.Dtos.WeaponType
-@inject IWeaponTypeService _weaponTypeService
+@inject ICharacterService _characterService
 @inject NavigationManager _navigationManager
 @inject IWeaponService _weaponService
 
@@ -9,23 +9,23 @@
     <h3 class="card-title text-primary mb-3 ml-3">@Title Зброю</h3>
 
     <div class="col-md-10">
-        <EditForm Model="Weapon" OnValidSubmit="CreateWeapon">
+        <EditForm Model="Character" OnValidSubmit="CreateWeapon">
             <DataAnnotationsValidator />
             <div class="form-group">
                 <label class="col-form-label">Ім'я</label>
-                <InputText @bind-Value="Weapon.Name" class="form-control"></InputText>
-                <ValidationMessage For="()=>Weapon.Name"></ValidationMessage>
+                <InputText @bind-Value="Character.Name" class="form-control"></InputText>
+                <ValidationMessage For="()=>Character.Name"></ValidationMessage>
             </div>
             <div class="form-group">
                 <label class="col-form-label">Тип</label>
-                <InputSelect @bind-Value="Weapon.WeaponTypeId" class="form-control">
-                    <option value="0">Виберіть тип зброї</option>
-                    @foreach (var weaponType in WeaponTypes)
+                <InputSelect @bind-Value="Character.WeaponId" class="form-control">
+                    <option value="0">Виберіть зброю</option>
+                    @foreach (var weapon in Weapons)
                     {
-                        <option value="@weaponType.Id">@weaponType.Name</option>
+                        <option value="@weapon.Id">@weapon.Name</option>
                     }
                 </InputSelect>
-                <ValidationMessage For="()=>Weapon.WeaponTypeId"></ValidationMessage>
+                <ValidationMessage For="()=>Character.WeaponId"></ValidationMessage>
             </div>
             <div class="form-group py-2">
                 <button class="btn btn-primary">@Title</button>
@@ -38,17 +38,17 @@
 @code
 {
     private string Title { get; set; } = "Створити";
-    private CreateWeaponDto Weapon { get; set; } = new();
-    private IEnumerable<WeaponTypeDto> WeaponTypes { get; set; } = new List<WeaponTypeDto>();
+    private CreateCharacterDto Character { get; set; } = new();
+    private IEnumerable<WeaponDto> Weapons { get; set; } = new List<WeaponDto>();
 
     protected override async Task OnInitializedAsync()
     {
-        WeaponTypes = (await _weaponTypeService.GetAllAsync()).ToList();
+        Weapons = (await _weaponService.GetAllAsync()).ToList();
     }
 
     private async Task CreateWeapon()
     {
-        await _weaponService.AddAsync(Weapon);
+        await _characterService.AddAsync(Character);
         _navigationManager.NavigateTo("weapon");
     }
 }
