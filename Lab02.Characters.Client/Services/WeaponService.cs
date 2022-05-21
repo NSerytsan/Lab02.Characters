@@ -28,9 +28,9 @@ public class WeaponService : IWeaponService
         }
     }
 
-    public Task DeleteAsync(int id)
+    public async Task DeleteAsync(int id)
     {
-        throw new NotImplementedException();
+         await _httpClient.DeleteAsync($"api/Weapon/{id}");
     }
 
     public async Task<IEnumerable<WeaponDto>> GetAllAsync()
@@ -67,8 +67,8 @@ public class WeaponService : IWeaponService
         }
     }
 
-    public Task UpdateAsync(UpdateWeaponDto weaponType)
+    public async Task UpdateAsync(UpdateWeaponDto weapon)
     {
-        throw new NotImplementedException();
+        var response = await _httpClient.PutAsJsonAsync<UpdateWeaponDto>($"api/Weapon/{weapon.Id}", weapon);
     }
 }

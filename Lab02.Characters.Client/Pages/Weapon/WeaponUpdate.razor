@@ -60,6 +60,14 @@
 
     private async Task UpdateWeapon()
     {
+        if(IsDelete)
+        {
+            await _weaponService.DeleteAsync(Id);
+        }
+        else
+        {
+            await _weaponService.UpdateAsync(new UpdateWeaponDto{Id = Weapon.Id, Name = Weapon.Name, WeaponTypeId = Weapon.WeaponTypeId});
+        }
         _navigationManager.NavigateTo("weapon");
     }
 }
