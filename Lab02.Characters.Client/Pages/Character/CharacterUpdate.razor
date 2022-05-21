@@ -1,4 +1,5 @@
-@page "/character/create"
+@page "/character/edit/{id:int}"
+@page "/character/delete/{id:int}"
 @using Models.Dtos.Character
 @using Models.Dtos.Weapon
 @inject ICharacterService _characterService
@@ -9,7 +10,7 @@
     <h3 class="card-title text-primary mb-3 ml-3">@Title Персонажа</h3>
 
     <div class="col-md-10">
-        <EditForm Model="Character" OnValidSubmit="CreateCharacter">
+        <EditForm Model="Character" OnValidSubmit="UpdateCharacter">
             <DataAnnotationsValidator />
             <div class="form-group">
                 <label class="col-form-label">Ім'я</label>
@@ -48,7 +49,7 @@
                 <ValidationMessage For="()=>Character.WeaponId"></ValidationMessage>
             </div>
             <div class="form-group py-2">
-                <button class="btn btn-primary">@Title</button>
+                <button class=@SubmitButtonClass>@Title</button>
                 <NavLink href="character" class="btn btn-secondary">До списку</NavLink>
             </div>
         </EditForm>
@@ -57,18 +58,38 @@
 
 @code
 {
-    private string Title { get; set; } = "Створити";
-    private CreateCharacterDto Character { get; set; } = new(){Biography = string.Empty};
+    [Parameter]
+    public int Id { get; set; }
+    private string Title { get; set; } = "Редагувати";
+    private CharacterDto Character { get; set; } = new();
     private IEnumerable<WeaponDto> Weapons { get; set; } = new List<WeaponDto>();
+    private bool IsDelete { get; set; } = false;
+    private string SubmitButtonClass { get; set; } = "btn btn-primary";
+
 
     protected override async Task OnInitializedAsync()
     {
+        IsDelete = _navigationManager.Uri.ToString().Contains("/delete/");
+        if (IsDelete)
+        {
+            Title = "Видалити";
+            SubmitButtonClass = "btn btn-danger";
+        }
         Weapons = (await _weaponService.GetAllAsync()).ToList();
+        Character = await _characterService.GetAsync(Id);
     }
 
-    private async Task CreateCharacter()
+    private async Task UpdateCharacter()
     {
-        await _characterService.AddAsync(Character);
-        _navigationManager.NavigateTo("character");
+        if (IsDelete)
+        {
+            await _characterService.DeleteAsync(Id);
+        }
+        else
+        {
+            //await _characterService.UpdateAsync(new UpdateWeaponDto{Id = Character.Id, Name = Character.Name, WeaponTypeId =
+            //Character.WeaponTypeId});
     }
+    _navigationManager.NavigateTo("character");
+}
 }
