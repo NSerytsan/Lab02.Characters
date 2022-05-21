@@ -1,3 +1,4 @@
+using System.Net.Http.Json;
 using Lab02.Characters.Client.Services.Contracts;
 using Lab02.Characters.Models.Dtos.Character;
 
@@ -5,24 +6,64 @@ namespace Lab02.Characters.Client.Services;
 
 public class CharacterService : ICharacterService
 {
-    public Task<CharacterDto> AddAsync(CreateCharacterDto weaponType)
+    private readonly HttpClient _httpClient;
+
+    public CharacterService(HttpClient httpClient)
     {
-        throw new NotImplementedException();
+        _httpClient = httpClient;
+    }
+    public async Task<CharacterDto> AddAsync(CreateCharacterDto character)
+    {
+        var response = await _httpClient.PostAsJsonAsync<CreateCharacterDto>("api/Character", character);
+        if (response.IsSuccessStatusCode)
+        {
+            var result = await response.Content.ReadFromJsonAsync<CharacterDto>();
+            return result ?? new CharacterDto();
+        }
+        else
+        {
+            var message = await response.Content.ReadAsStringAsync();
+            throw new Exception($"Http status:{response.StatusCode} Message -{message}");
+        }
     }
 
-    public Task DeleteAsync(int id)
+    public async Task DeleteAsync(int id)
     {
-        throw new NotImplementedException();
+        await _httpClient.DeleteAsync($"api/Character/{id}");
     }
 
-    public Task<IEnumerable<CharacterDto>> GetAllAsync()
+    public async Task<IEnumerable<CharacterDto>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        var response = await _httpClient.GetAsync("api/Character");
+        if (response.IsSuccessStatusCode)
+        {
+            if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
+            {
+                return Enumerable.Empty<CharacterDto>();
+            }
+            var result = await response.Content.ReadFromJsonAsync<IEnumerable<CharacterDto>>();
+            return result ?? Enumerable.Empty<CharacterDto>();
+        }
+        else
+        {
+            var message = await response.Content.ReadAsStringAsync();
+            throw new Exception($"Http status code: {response.StatusCode} message: {message}");
+        }
     }
 
-    public Task<CharacterDto> GetAsync(int id)
+    public async Task<CharacterDto> GetAsync(int id)
     {
-        throw new NotImplementedException();
+        var response = await _httpClient.GetAsync($"api/Character/{id}");
+        if (response.IsSuccessStatusCode)
+        {
+            var result = await response.Content.ReadFromJsonAsync<CharacterDto>();
+            return result ?? new CharacterDto();
+        }
+        else
+        {
+            var message = await response.Content.ReadAsStringAsync();
+            throw new Exception($"Http status code: {response.StatusCode} message: {message}");
+        }
     }
 
     public Task UpdateAsync(CharacterDto weaponType)

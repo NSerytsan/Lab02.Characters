@@ -6,7 +6,7 @@ public interface ISkillService
 {
     Task<IEnumerable<SkillDto>> GetAllAsync();
     Task<SkillDto> GetAsync(int id);
-    Task<SkillDto> AddAsync(CreateSkillDto weaponType);
-    Task UpdateAsync(UpdateSkillDto weaponType);
+    Task<SkillDto> AddAsync(CreateSkillDto skill);
+    Task UpdateAsync(UpdateSkillDto skill);
     Task DeleteAsync(int id);
 }
