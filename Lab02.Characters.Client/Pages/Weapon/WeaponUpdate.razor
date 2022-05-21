@@ -1,0 +1,65 @@
+@page "/weapon/edit/{id:int}"
+@page "/weapon/delete/{id:int}"
+@using Models.Dtos.Weapon
+@inject IWeaponTypeService _weaponTypeService
+@inject NavigationManager _navigationManager
+@inject IWeaponService _weaponService
+
+<div class="row my-2">
+    <h3 class="card-title text-primary mb-3 ml-3">@Title Зброю</h3>
+
+    <div class="col-md-10">
+        <EditForm Model="Weapon" OnValidSubmit="UpdateWeapon">
+            <DataAnnotationsValidator />
+            <div class="form-group">
+                <label class="col-form-label">Ім'я</label>
+                <InputText @bind-Value="Weapon.Name" class="form-control"></InputText>
+                <ValidationMessage For="()=>Weapon.Name"></ValidationMessage>
+            </div>
+            <div class="form-group">
+                <label class="col-form-label">Тип</label>
+                <InputSelect @bind-Value="Weapon.WeaponTypeId" class="form-control">
+                    <option value="0">Виберіть тип зброї</option>
+                    @foreach (var weaponType in WeaponTypes)
+                    {
+                        <option value="@weaponType.Id">@weaponType.Name</option>
+                    }
+                </InputSelect>
+                <ValidationMessage For="()=>Weapon.WeaponTypeId"></ValidationMessage>
+            </div>
+            <div class="form-group py-2">
+                <button class=@SubmitButtonClass>@Title</button>
+                <NavLink href="weapon" class="btn btn-secondary">До списку</NavLink>
+            </div>
+        </EditForm>
+    </div>
+</div>
+
+@code
+{
+    [Parameter]
+    public int Id { get; set; }
+    private string Title { get; set; } = "Редагувати";
+    private WeaponDto Weapon { get; set; } = new();
+    private IEnumerable<WeaponTypeDto> WeaponTypes { get; set; } = new List<WeaponTypeDto>();
+    private bool IsDelete { get; set; } = false;
+    private string SubmitButtonClass { get; set; } = "btn btn-primary";
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        IsDelete = _navigationManager.Uri.ToString().Contains("/delete/");
+        if (IsDelete)
+        {
+            Title = "Видалити";
+            SubmitButtonClass = "btn btn-danger";
+        }
+        WeaponTypes = (await _weaponTypeService.GetAllAsync()).ToList();
+        Weapon = await _weaponService.GetAsync(Id);
+    }
+
+    private async Task UpdateWeapon()
+    {
+        _navigationManager.NavigateTo("weapon");
+    }
+}

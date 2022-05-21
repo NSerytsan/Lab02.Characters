@@ -52,9 +52,19 @@ public class WeaponService : IWeaponService
         }
     }
 
-    public Task<WeaponDto> GetAsync(int id)
+    public async Task<WeaponDto> GetAsync(int id)
     {
-        throw new NotImplementedException();
+        var response = await _httpClient.GetAsync($"api/Weapon/{id}");
+        if (response.IsSuccessStatusCode)
+        {
+            var result = await response.Content.ReadFromJsonAsync<WeaponDto>();
+            return result ?? new WeaponDto();
+        }
+        else
+        {
+            var message = await response.Content.ReadAsStringAsync();
+            throw new Exception($"Http status code: {response.StatusCode} message: {message}");
+        }
     }
 
     public Task UpdateAsync(UpdateWeaponDto weaponType)
