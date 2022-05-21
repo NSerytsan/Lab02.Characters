@@ -29,7 +29,7 @@ public class SkillService : ISkillService
 
     public async Task DeleteAsync(int id)
     {
-        await _httpClient.DeleteAsync($"api/SKill/{id}");
+        await _httpClient.DeleteAsync($"api/Skill/{id}");
     }
 
     public async Task<IEnumerable<SkillDto>> GetAllAsync()
