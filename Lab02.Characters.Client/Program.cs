@@ -12,5 +12,6 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https:/
 builder.Services.AddScoped<IWeaponTypeService, WeaponTypeService>();
 builder.Services.AddScoped<IWeaponService, WeaponService>();
 builder.Services.AddScoped<ISkillService, SkillService>();
+builder.Services.AddScoped<ICharacterService, CharacterService>();
 
 await builder.Build().RunAsync();

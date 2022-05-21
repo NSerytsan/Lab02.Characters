@@ -1,5 +1,60 @@
 ﻿@page "/"
+@page "/character"
+@inject ICharacterService _characterService
+@using Models.Dtos.Character
 
 <PageTitle>Персонажі</PageTitle>
 
-<h3>Персонажі</h3>
+<div class="row mt-4">
+    <div class="col-6">
+        <h4 class="card-title text-primary">Персонажі</h4>
+    </div>
+    <div class="col-4 offset-2">
+        <a href="character/create" class="btn btn-primary form-control">Створити Персонажа</a>
+    </div>
+    <div class="col-12 p-3">
+        @if (Characters.Any())
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Ім'я</th>
+                        <th>Атака</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var character in Characters)
+                    {
+                        <tr>
+                            <td>@character.Name</td>
+                            <td>@character.Attack</td>
+                            <td>
+                                <NavLink href="@($"character/edit/{character.Id}")" class="btn-primary btn">
+                                    <i class="bi bi-pencil-square"></i>
+                                </NavLink>
+                                <NavLink href="@($"character/delete/{character.Id}")" class="btn-danger btn">
+                                    <i class="bi bi-trash3"></i>
+                                </NavLink>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <div class="spinner"></div>
+        }
+    </div>
+</div>
+
+
+@code {
+    private IEnumerable<CharacterDto> Characters { get; set; } = new List<CharacterDto>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Characters = await _characterService.GetAllAsync();
+    }
+}
