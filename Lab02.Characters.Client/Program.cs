@@ -11,5 +11,6 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7262/") });
 builder.Services.AddScoped<IWeaponTypeService, WeaponTypeService>();
 builder.Services.AddScoped<IWeaponService, WeaponService>();
+builder.Services.AddScoped<ISkillService, SkillService>();
 
 await builder.Build().RunAsync();

@@ -1,0 +1,59 @@
+﻿@page "/skill"
+@using Models.Dtos.Skill
+@inject ISkillService _skillService
+
+<PageTitle>Навички</PageTitle>
+
+<div class="row mt-4">
+    <div class="col-6">
+        <h4 class="card-title text-primary">Навички</h4>
+    </div>
+    <div class="col-4 offset-2">
+        <a href="skill/create" class="btn btn-primary form-control">Створити Нову Навичку</a>
+    </div>
+    <div class="col-12 p-3">
+        @if (Skills.Any())
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Ім'я</th>
+                        <th>Опис</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var skill in Skills)
+                    {
+                        <tr>
+                            <td>@skill.Name</td>
+                            <td>@skill.Description</td>
+                            <td>
+                                <NavLink href="@($"skil/edit/{skill.Id}")" class="btn-primary btn">
+                                    <i class="bi bi-pencil-square"></i>
+                                </NavLink>
+                                <NavLink href="@($"skill/delete/{skill.Id}")" class="btn-danger btn">
+                                    <i class="bi bi-trash3"></i>
+                                </NavLink>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <div class="spinner"></div>
+        }
+    </div>
+</div>
+
+@code {
+
+    private IEnumerable<SkillDto> Skills { get; set; } = new List<SkillDto>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Skills = await _skillService.GetAllAsync();
+    }
+}
