@@ -7,7 +7,7 @@
             var Text = TextField?.Invoke(item);
             var Value = ValueField?.Invoke(item).ToString();
             bool Checked = false;
-            if (Value != null && SelectedValues.Contains(Value))
+            if (Value != null && SelectedValues.Contains(int.Parse(Value)))
             {
                 Checked = true;
             }
@@ -37,23 +37,23 @@
     public RenderFragment ChildContent { get; set; } = null!;
     // The array which contains the list of selected checkboxs
     [Parameter]
-    public List<string> SelectedValues { get; set; } = new List<string>();
+    public List<int> SelectedValues { get; set; } = new List<int>();
 
     //Method to update the selected value on click on checkbox
     public void CheckboxClicked(string aSelectedId, object aChecked)
     {
         if ((bool)aChecked)
         {
-            if (!SelectedValues.Contains(aSelectedId))
+            if (!SelectedValues.Contains(int.Parse(aSelectedId)))
             {
-                SelectedValues.Add(aSelectedId);
+                SelectedValues.Add(int.Parse(aSelectedId));
             }
         }
         else
         {
-            if (SelectedValues.Contains(aSelectedId))
+            if (SelectedValues.Contains(int.Parse(aSelectedId)))
             {
-                SelectedValues.Remove(aSelectedId);
+                SelectedValues.Remove(int.Parse(aSelectedId));
             }
         }
         StateHasChanged();

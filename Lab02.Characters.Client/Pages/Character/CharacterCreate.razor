@@ -52,8 +52,8 @@
             <div class="form-group mt-2 mb-4">
                 <label class="col-form-label">Навички</label>
                 <CheckBoxList Data="@Skills" TextField="@((item)=>item.Name)" ValueField="@((item)=>item.Id)"
-                    SelectedValues="@SelectedIds" />
-
+                    SelectedValues="Character.SkillIds" />
+                <ValidationMessage For="()=>Character.SkillIds"></ValidationMessage>
             </div>
             <div class="form-group py-2">
                 <button class="btn btn-primary">@Title</button>
@@ -66,10 +66,9 @@
 @code
 {
     private string Title { get; set; } = "Створити";
-    private CreateCharacterDto Character { get; set; } = new() { Biography = string.Empty };
+    private CreateCharacterDto Character { get; set; } = new() { Biography = string.Empty, SkillIds = new List<int>() };
     private IEnumerable<WeaponDto> Weapons { get; set; } = new List<WeaponDto>();
     private IEnumerable<SkillDto> Skills { get; set; } = new List<SkillDto>();
-    protected List<string> SelectedIds = new List<string>();
     protected override async Task OnInitializedAsync()
     {
         Weapons = (await _weaponService.GetAllAsync()).ToList();
@@ -78,7 +77,6 @@
 
     private async Task CreateCharacter()
     {
-        Character.SkillIds = SelectedIds.Select(i => int.Parse(i));
         await _characterService.AddAsync(Character);
         _navigationManager.NavigateTo("character");
     }

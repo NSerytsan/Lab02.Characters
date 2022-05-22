@@ -1,8 +1,11 @@
 using System.ComponentModel.DataAnnotations;
+using Lab02.Characters.Models.Validators;
 
 namespace Lab02.Characters.Models.Dtos.Character;
 
 public class CreateCharacterDto : BaseCharacterDto
 {
-    public IEnumerable<int> SkillIds { get; set; } = null!;
+    [Required]
+    [MinLength(1, ErrorMessage = "Треба хоч одна навичка")]
+    public List<int> SkillIds { get; set; } = null!;
 }
