@@ -4,6 +4,7 @@ namespace Lab02.Characters.Models.Dtos.Character;
 
 public class BaseCharacterDto
 {
+    [Required]
     public int WeaponId { get; set; }
     [Required]
     public string Name { get; set; } = null!;
@@ -13,5 +14,6 @@ public class BaseCharacterDto
     public int Attack { get; set; }
     [Required]
     public int Defense { get; set; }
+    [Required]
     public string Biography { get; set; } = null!;
 }
