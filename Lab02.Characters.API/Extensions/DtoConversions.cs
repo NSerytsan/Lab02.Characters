@@ -82,18 +82,15 @@ public static partial class DtoConversions
         return character;
     }
 
-    public static Character FromUpdateCharacterDto(this UpdateCharacterDto updateCharacterDto, IEnumerable<Skill> skills)
+    public static void UpdateCharacterDto(this UpdateCharacterDto updateCharacterDto, ref Character character, IEnumerable<Skill> skills)
     {
-        var character = new Character()
-        {
-            Name = updateCharacterDto.Name,
-            HealthPoints = updateCharacterDto.HealthPoints,
-            Attack = updateCharacterDto.Attack,
-            Defense = updateCharacterDto.Defense,
-            WeaponId = updateCharacterDto.WeaponId,
-            Biography = updateCharacterDto.Biography,
-            Skills = new HashSet<Skill>()
-        };
+        character.Name = updateCharacterDto.Name;
+        character.HealthPoints = updateCharacterDto.HealthPoints;
+        character.Attack = updateCharacterDto.Attack;
+        character.Defense = updateCharacterDto.Defense;
+        character.WeaponId = updateCharacterDto.WeaponId;
+        character.Biography = updateCharacterDto.Biography;
+        character.Skills.Clear();
 
         foreach (var skillId in updateCharacterDto.SkillIds)
         {
@@ -103,8 +100,6 @@ public static partial class DtoConversions
                 character.Skills.Add(skill);
             }
         }
-
-        return character;
     }
 
     // Skill

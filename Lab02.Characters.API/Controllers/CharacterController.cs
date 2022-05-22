@@ -61,7 +61,15 @@ namespace Lab02.Characters.API.Controllers
                 return BadRequest();
             }
 
-            var character = updateCharacterDto.FromUpdateCharacterDto(_context.Skills);
+            var character = await _context.Characters.Include(c => c.Skills).FirstOrDefaultAsync(c => c.Id == id);
+
+            if (character == null)
+            {
+                return NotFound();
+            }
+            
+            updateCharacterDto.UpdateCharacterDto(ref character, _context.Skills);
+            
             _context.Update(character);
 
             try
