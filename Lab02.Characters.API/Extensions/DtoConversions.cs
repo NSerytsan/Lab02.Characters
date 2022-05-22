@@ -6,7 +6,7 @@ using Lab02.Characters.Models.Dtos.WeaponType;
 
 namespace Lab02.Characters.API.Extensions;
 
-public static class DtoConversions
+public static partial class DtoConversions
 {
     // Character
     public static IEnumerable<CharacterDto> ToCharacterDtos(this IEnumerable<Character> characters)
