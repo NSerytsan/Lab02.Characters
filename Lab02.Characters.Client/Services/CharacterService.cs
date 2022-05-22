@@ -66,8 +66,8 @@ public class CharacterService : ICharacterService
         }
     }
 
-    public Task UpdateAsync(CharacterDto weaponType)
+    public async Task UpdateAsync(UpdateCharacterDto character)
     {
-        throw new NotImplementedException();
+        var response = await _httpClient.PutAsJsonAsync<UpdateCharacterDto>($"api/Character/{character.Id}", character);
     }
 }

@@ -86,7 +86,6 @@
         }
         Weapons = (await _weaponService.GetAllAsync()).ToList();
         Character = (await _characterService.GetAsync(Id)).ToUpdateCharacterDto();
-
         Skills = (await _skillService.GetAllAsync()).ToList();
     }
 
@@ -98,8 +97,7 @@
         }
         else
         {
-            //await _characterService.UpdateAsync(new UpdateWeaponDto{Id = Character.Id, Name = Character.Name, WeaponTypeId =
-            //Character.WeaponTypeId});
+            await _characterService.UpdateAsync(Character);
         }
         _navigationManager.NavigateTo("character");
     }

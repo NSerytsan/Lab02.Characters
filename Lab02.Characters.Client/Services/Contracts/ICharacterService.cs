@@ -7,6 +7,6 @@ public interface ICharacterService
     Task<IEnumerable<CharacterDto>> GetAllAsync();
     Task<CharacterDto> GetAsync(int id);
     Task<CharacterDto> AddAsync(CreateCharacterDto character);
-    Task UpdateAsync(CharacterDto character);
+    Task UpdateAsync(UpdateCharacterDto character);
     Task DeleteAsync(int id);
 }

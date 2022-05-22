@@ -54,14 +54,15 @@ namespace Lab02.Characters.API.Controllers
         // PUT: api/Character/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCharacter(int id, Character character)
+        public async Task<IActionResult> PutCharacter(int id, UpdateCharacterDto updateCharacterDto)
         {
-            if (id != character.Id)
+            if (id != updateCharacterDto.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(character).State = EntityState.Modified;
+            var character = updateCharacterDto.FromUpdateCharacterDto(_context.Skills);
+            _context.Update(character);
 
             try
             {
