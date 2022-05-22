@@ -21,6 +21,6 @@
 		<Folder Include="Controllers\"/>
 	</ItemGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\Lab02.Charcters.Models\Lab02.Characters.Models.csproj"/>
+		<ProjectReference Include="..\Lab02.Characters.Models\Lab02.Characters.Models.csproj"/>
 	</ItemGroup>
 </Project>

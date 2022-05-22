@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using Lab02.Characters.Models.Validators;
 
 namespace Lab02.Characters.Models.Dtos.Character;
 
