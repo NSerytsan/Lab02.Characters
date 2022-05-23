@@ -5,7 +5,7 @@ namespace Lab02.Characters.Test
         [Fact]
         public void Create_ReturnsCreatedWeaponType()
         {
-
+            var mockRepo = new Mock<IWeaponTypeRepository>();
         }
     }
 }
