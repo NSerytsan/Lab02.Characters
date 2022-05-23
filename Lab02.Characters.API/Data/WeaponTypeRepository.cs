@@ -31,7 +31,7 @@ public class WeaponTypeRepository : IWeaponTypeRepository
 
     public async Task<IEnumerable<WeaponType>> GetAllAsync()
     {
-        return await _context.WeaponTypes.ToListAsync();
+        return await _context.WeaponTypes.Include(wt => wt.Weapons).ToListAsync();
     }
 
     public async Task<WeaponType?> GetAsync(int? id)
@@ -39,11 +39,12 @@ public class WeaponTypeRepository : IWeaponTypeRepository
         if (id is null || _context.WeaponTypes is null)
             return null;
 
-        return await _context.WeaponTypes.FindAsync(id);
+        return await _context.WeaponTypes.Include(wt => wt.Weapons).SingleOrDefaultAsync(wt=>wt.Id == id);
     }
 
-    public Task UpdateAsync(WeaponType weaponType)
+    public async Task UpdateAsync(WeaponType weaponType)
     {
-        throw new NotImplementedException();
+        _context.Update(weaponType);
+        await _context.SaveChangesAsync();
     }
 }

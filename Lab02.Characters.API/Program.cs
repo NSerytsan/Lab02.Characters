@@ -14,6 +14,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", b => b.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod());
 });
+builder.Services.AddScoped<IWeaponTypeRepository, WeaponTypeRepository>();
 
 var app = builder.Build();
 

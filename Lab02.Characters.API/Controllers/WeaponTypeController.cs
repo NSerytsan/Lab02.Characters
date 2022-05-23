@@ -11,34 +11,27 @@ namespace Lab02.Characters.API.Controllers
     [ApiController]
     public class WeaponTypeController : ControllerBase
     {
-        private readonly CharactersDbContext _context;
+        private readonly IWeaponTypeRepository _weaponTypeRepository;
 
-        public WeaponTypeController(CharactersDbContext context)
+        public WeaponTypeController(IWeaponTypeRepository weaponTypeRepository)
         {
-            _context = context;
+            this._weaponTypeRepository = weaponTypeRepository;
         }
 
         // GET: api/WeaponType
         [HttpGet]
         public async Task<ActionResult<IEnumerable<WeaponTypeDto>>> GetWeaponTypes()
         {
-            if (_context.WeaponTypes == null)
-            {
-                return NotFound();
-            }
+            var weaponTypes = await _weaponTypeRepository.GetAllAsync();
 
-            return Ok(await _context.WeaponTypes.Include(wt => wt.Weapons).Select(wt => wt.ToWeaponTypeDto()).ToListAsync());
+            return Ok(from weaponType in weaponTypes select weaponType.ToWeaponTypeDto());
         }
 
         // GET: api/WeaponType/5
         [HttpGet("{id}")]
         public async Task<ActionResult<WeaponTypeDto>> GetWeaponType(int id)
         {
-            if (_context.WeaponTypes == null)
-            {
-                return NotFound();
-            }
-            var weaponType = await _context.WeaponTypes.Include(wt => wt.Weapons).SingleOrDefaultAsync(wt => wt.Id == id);
+            var weaponType = await _weaponTypeRepository.GetAsync(id);
 
             if (weaponType == null)
             {
@@ -58,7 +51,7 @@ namespace Lab02.Characters.API.Controllers
                 return BadRequest();
             }
 
-            var weaponType = await _context.WeaponTypes.FindAsync(id);
+            var weaponType = await _weaponTypeRepository.GetAsync(id);
 
             if (weaponType == null)
             {
@@ -67,21 +60,7 @@ namespace Lab02.Characters.API.Controllers
 
             weaponType.Name = updateWeaponTypeDto.Name;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!WeaponTypeExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            await _weaponTypeRepository.UpdateAsync(weaponType);
 
             return NoContent();
         }
@@ -91,18 +70,12 @@ namespace Lab02.Characters.API.Controllers
         [HttpPost]
         public async Task<ActionResult<CreateWeaponTypeDto>> PostWeaponType(CreateWeaponTypeDto createWeaponTypeDto)
         {
-            if (_context.WeaponTypes == null)
-            {
-                return Problem("Entity set 'CharactersDbContext.WeaponTypes'  is null.");
-            }
-
             var weaponType = new WeaponType()
             {
                 Name = createWeaponTypeDto.Name
             };
 
-            _context.WeaponTypes.Add(weaponType);
-            await _context.SaveChangesAsync();
+            await _weaponTypeRepository.AddAsync(weaponType);
 
             return CreatedAtAction("GetWeaponType", new { id = weaponType.Id }, new WeaponTypeDto { Id = weaponType.Id, Name = weaponType.Name });
         }
@@ -111,25 +84,9 @@ namespace Lab02.Characters.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteWeaponType(int id)
         {
-            if (_context.WeaponTypes == null)
-            {
-                return NotFound();
-            }
-            var weaponType = await _context.WeaponTypes.FindAsync(id);
-            if (weaponType == null)
-            {
-                return NotFound();
-            }
-
-            _context.WeaponTypes.Remove(weaponType);
-            await _context.SaveChangesAsync();
+            await _weaponTypeRepository.DeleteAsync(id);
 
             return NoContent();
-        }
-
-        private bool WeaponTypeExists(int id)
-        {
-            return (_context.WeaponTypes?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
