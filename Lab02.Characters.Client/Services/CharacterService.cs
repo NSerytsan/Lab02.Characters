@@ -1,6 +1,6 @@
-using System.Net.Http.Json;
 using Lab02.Characters.Client.Services.Contracts;
 using Lab02.Characters.Models.Dtos.Character;
+using System.Net.Http.Json;
 
 namespace Lab02.Characters.Client.Services;
 

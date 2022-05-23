@@ -1,5 +1,4 @@
 using Lab02.Characters.API.Data;
-using Lab02.Characters.API.Entities;
 using Lab02.Characters.API.Extensions;
 using Lab02.Characters.Models.Dtos.Character;
 using Microsoft.AspNetCore.Mvc;
@@ -67,9 +66,9 @@ namespace Lab02.Characters.API.Controllers
             {
                 return NotFound();
             }
-            
+
             updateCharacterDto.UpdateCharacterDto(ref character, _context.Skills);
-            
+
             _context.Update(character);
 
             try

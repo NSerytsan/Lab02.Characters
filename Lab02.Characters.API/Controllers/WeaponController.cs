@@ -109,7 +109,7 @@ namespace Lab02.Characters.API.Controllers
 
             _context.Weapons.Add(weapon);
             await _context.SaveChangesAsync();
-            
+
             weapon = await _context.Weapons.Include(w => w.WeaponType).FirstOrDefaultAsync(w => w.Id == weapon.Id);
 
             if (weapon == null)

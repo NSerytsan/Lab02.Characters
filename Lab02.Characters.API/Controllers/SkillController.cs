@@ -1,8 +1,7 @@
 using Lab02.Characters.API.Data;
 using Lab02.Characters.API.Entities;
-using Lab02.Characters.Models.Dtos.Character;
-using Lab02.Characters.Models.Dtos.Skill;
 using Lab02.Characters.API.Extensions;
+using Lab02.Characters.Models.Dtos.Skill;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 

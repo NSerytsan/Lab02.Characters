@@ -16,7 +16,7 @@ public static partial class DtoConversions
             Biography = character.Biography,
             WeaponId = character.WeaponId,
             SkillIds = (from skill in character.Skills
-                       select skill.Id).ToList()
+                        select skill.Id).ToList()
         };
     }
 }

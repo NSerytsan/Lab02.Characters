@@ -1,6 +1,6 @@
-using System.Net.Http.Json;
 using Lab02.Characters.Client.Services.Contracts;
 using Lab02.Characters.Models.Dtos.Weapon;
+using System.Net.Http.Json;
 
 namespace Lab02.Characters.Client.Services;
 
@@ -30,7 +30,7 @@ public class WeaponService : IWeaponService
 
     public async Task DeleteAsync(int id)
     {
-         await _httpClient.DeleteAsync($"api/Weapon/{id}");
+        await _httpClient.DeleteAsync($"api/Weapon/{id}");
     }
 
     public async Task<IEnumerable<WeaponDto>> GetAllAsync()

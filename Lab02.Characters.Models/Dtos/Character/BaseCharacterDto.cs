@@ -5,7 +5,7 @@ namespace Lab02.Characters.Models.Dtos.Character;
 public class BaseCharacterDto
 {
     [Required]
-    [Range(1, int.MaxValue, ErrorMessage = "Виберіть зброю") ]
+    [Range(1, int.MaxValue, ErrorMessage = "Виберіть зброю")]
     public int WeaponId { get; set; }
     [Required]
     public string Name { get; set; } = null!;

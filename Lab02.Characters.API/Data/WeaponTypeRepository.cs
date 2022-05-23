@@ -39,7 +39,7 @@ public class WeaponTypeRepository : IWeaponTypeRepository
         if (id is null || _context.WeaponTypes is null)
             return null;
 
-        return await _context.WeaponTypes.Include(wt => wt.Weapons).SingleOrDefaultAsync(wt=>wt.Id == id);
+        return await _context.WeaponTypes.Include(wt => wt.Weapons).SingleOrDefaultAsync(wt => wt.Id == id);
     }
 
     public async Task UpdateAsync(WeaponType weaponType)
