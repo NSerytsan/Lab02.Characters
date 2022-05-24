@@ -100,5 +100,58 @@ namespace Lab02.Characters.Test
             Assert.Equal(testId, weaponTypeDto.Id);
             Assert.Equal(testName, weaponTypeDto.Name);
         }
+
+        [Fact]
+        public async Task Test_PUT_PutWeaponType_Ok()
+        {
+            string testName = "Weapon Name 1";
+            int testId = 1;
+            var mockWeaponType = new WeaponType()
+            {
+                Id = testId,
+                Name = testName,
+                Weapons = new HashSet<Weapon>()
+            };
+            var weaponType = new UpdateWeaponTypeDto()
+            {
+                Id = testId,
+                Name = testName
+            };
+            var mockRepo = new Mock<IWeaponTypeRepository>();
+            mockRepo.Setup(repo => repo.GetAsync(It.IsAny<int>())).ReturnsAsync(mockWeaponType);
+            mockRepo.Setup(repo => repo.UpdateAsync(It.IsAny<WeaponType>()));
+            var controller = new WeaponTypeController(mockRepo.Object);
+
+            var result = await controller.PutWeaponType(testId, weaponType);
+
+            Assert.IsType<NoContentResult>(result);
+        }
+
+        [Fact]
+        public async Task Test_PUT_PutWeaponType_BadRequest()
+        {
+            string testName = "Weapon Name 1";
+            int testId = 1;
+            int wrongId = 123;
+            var mockWeaponType = new WeaponType()
+            {
+                Id = testId,
+                Name = testName,
+                Weapons = new HashSet<Weapon>()
+            };
+            var weaponType = new UpdateWeaponTypeDto()
+            {
+                Id = testId,
+                Name = testName
+            };
+            var mockRepo = new Mock<IWeaponTypeRepository>();
+            mockRepo.Setup(repo => repo.GetAsync(It.IsAny<int>())).ReturnsAsync(mockWeaponType);
+            mockRepo.Setup(repo => repo.UpdateAsync(It.IsAny<WeaponType>()));
+            var controller = new WeaponTypeController(mockRepo.Object);
+
+            var result = await controller.PutWeaponType(wrongId, weaponType);
+
+            Assert.IsType<BadRequestResult>(result);
+        }
     }
 }
