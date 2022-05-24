@@ -67,14 +67,14 @@ namespace Lab02.Characters.API.Controllers
         // POST: api/WeaponType
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<CreateWeaponTypeDto>> PostWeaponType(CreateWeaponTypeDto createWeaponTypeDto)
+        public async Task<ActionResult<WeaponTypeDto>> PostWeaponType(CreateWeaponTypeDto createWeaponTypeDto)
         {
             var weaponType = new WeaponType()
             {
                 Name = createWeaponTypeDto.Name
             };
 
-            await _weaponTypeRepository.AddAsync(weaponType);
+            weaponType = await _weaponTypeRepository.AddAsync(weaponType);
 
             return CreatedAtAction("GetWeaponType", new { id = weaponType.Id }, new WeaponTypeDto { Id = weaponType.Id, Name = weaponType.Name });
         }
