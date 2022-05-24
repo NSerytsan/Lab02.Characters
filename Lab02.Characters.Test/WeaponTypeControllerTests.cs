@@ -27,7 +27,7 @@ namespace Lab02.Characters.Test
             var controller = new WeaponTypeController(mockRepo.Object);
 
             var result = await controller.GetWeaponType(testId);
-            
+
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
             Assert.Equal(200, okResult.StatusCode);
             var weaponTypeDto = Assert.IsType<WeaponTypeDto>(okResult.Value);
@@ -39,11 +39,11 @@ namespace Lab02.Characters.Test
         [Fact]
         public async Task Test_GET_GetWeponType_NotFound()
         {
-            int testId = 1;   
+            int testId = 1;
             WeaponType? weaponType = null;
 
             var mockRepo = new Mock<IWeaponTypeRepository>();
-            mockRepo.Setup(repo => repo.GetAsync(It.IsAny<int>())).ReturnsAsync(weaponType);            
+            mockRepo.Setup(repo => repo.GetAsync(It.IsAny<int>())).ReturnsAsync(weaponType);
             var controller = new WeaponTypeController(mockRepo.Object);
 
             var result = await controller.GetWeaponType(testId);
@@ -55,11 +55,11 @@ namespace Lab02.Characters.Test
         public async Task Test_GET_GetWeaponTypes()
         {
             var mockRepo = new Mock<IWeaponTypeRepository>();
-            mockRepo.Setup(repo => repo.GetAllAsync()).ReturnsAsync(Multiple());   
+            mockRepo.Setup(repo => repo.GetAllAsync()).ReturnsAsync(Multiple());
             var controller = new WeaponTypeController(mockRepo.Object);
 
             var result = await controller.GetWeaponTypes();
-            
+
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
             var weaponTypes = Assert.IsAssignableFrom<IEnumerable<WeaponTypeDto>>(okResult.Value);
             Assert.Equal(3, weaponTypes.Count());
@@ -67,10 +67,12 @@ namespace Lab02.Characters.Test
 
         private static IEnumerable<WeaponType> Multiple()
         {
-            var weaponTypes = new List<WeaponType>();
-            weaponTypes.Add(new WeaponType() { Id = 1, Name = "Weapon Type 1", Weapons = new HashSet<Weapon>() });
-            weaponTypes.Add(new WeaponType() { Id = 2, Name = "Weapon Type 2", Weapons = new HashSet<Weapon>() });
-            weaponTypes.Add(new WeaponType() { Id = 3, Name = "Weapon Type 3", Weapons = new HashSet<Weapon>() });
+            var weaponTypes = new List<WeaponType>
+            {
+                new WeaponType() { Id = 1, Name = "Weapon Type 1", Weapons = new HashSet<Weapon>() },
+                new WeaponType() { Id = 2, Name = "Weapon Type 2", Weapons = new HashSet<Weapon>() },
+                new WeaponType() { Id = 3, Name = "Weapon Type 3", Weapons = new HashSet<Weapon>() }
+            };
 
             return weaponTypes;
         }
@@ -152,6 +154,19 @@ namespace Lab02.Characters.Test
             var result = await controller.PutWeaponType(wrongId, weaponType);
 
             Assert.IsType<BadRequestResult>(result);
+        }
+
+        [Fact]
+        public async Task Test_DELETE_DeleteWeaponType()
+        {
+            int testId = 1;
+            var mockRepo = new Mock<IWeaponTypeRepository>();
+            mockRepo.Setup(repo => repo.DeleteAsync(It.IsAny<int>())).Verifiable();
+            var controller = new WeaponTypeController(mockRepo.Object);
+
+            await controller.DeleteWeaponType(testId);
+
+            mockRepo.Verify();
         }
     }
 }
